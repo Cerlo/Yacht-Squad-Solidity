@@ -1,4 +1,4 @@
-# Project-2 : Unit Test applied to Voting project.
+# Project YachtSquad
 
 **This readme file has been wrote to explain how I build my test file.**
 
