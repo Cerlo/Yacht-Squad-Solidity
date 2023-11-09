@@ -1,4 +1,4 @@
-# Project YachtSquad
+# Project YachtSquad Solidity
 
 **This readme file has been wrote to explain how I build my test file.**
 
