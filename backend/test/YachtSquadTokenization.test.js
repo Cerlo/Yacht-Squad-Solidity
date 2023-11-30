@@ -6,7 +6,8 @@ const { ethers } = require("hardhat");
 
 describe("Voting test", function () {
     async function deployContract() {
-        const [owner, addVoter1, addVoter2] = await ethers.getSigners();
+        const [operator, tokenHolder, tokenBatchHolder, ...otherAccounts] = await ethers.getSigners();
+        const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
         const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenisation");
         const yachtSquadToken = await YachtSquadTokenisation.deploy(YachtSquadTokenisation);
         return { yachtSquadToken, owner, yachtCharter1, investor1, investor2, investor3 };

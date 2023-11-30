@@ -39,6 +39,8 @@ contract Royalties is IERC2981Royalties, ERC165{
     }
 }
 
+
+
 contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
 
     using Counters for Counters.Counter;
@@ -52,43 +54,56 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
 
     struct Yachts{
         string name;
-        uint mmsi; //mmsi/AIS
+        uint mmsi; //mmsi/AIS yacht identification
         string uri;//json
         string legal;
         address paymentWallet; // YCC / YachtSquad
+        uint maxSupply;
     }
-
-    
-
     Yachts[] yachts;
 
+    //event MintNewBatch(uint _tokenIds, string yachtName);
+
+    /*
+    * @ERC1155("") => mettre une URI de base pour le projet
+    */
     constructor() Ownable(msg.sender) ERC1155(""){} 
+
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, Royalties) returns (bool){
         return super.supportsInterface(interfaceId);
     }
 
-    function Mintyachts(address _investor, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _number) public returns (uint){
+    // doit être minté sur une address générique qui envera SFT lors de la fin du listing
+    function Mintyachts(address _mintWallet, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _amount) public returns (uint){
         _tokenIds.increment();
-		yachts.push(Yachts(_name, _mmsi, _uri, _legal, _paymentWallet));
+		yachts.push(Yachts(_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
         uint256 newItemId = _tokenIds.current();
-        _mint(_investor, newItemId, _number, "");
+        _mint(_mintWallet, newItemId, _amount, "");
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200);
         return newItemId;
     }
 
-
-    function uri(uint256 tokenId) public view virtual override returns (string memory) {
-        string memory tokenURI = _tokenURIs[tokenId];
-        // If token URI is set, concatenate base URI and tokenURI (via string.concat).
-        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, string.concat(tokenURI, _endURI)) : super.uri(tokenId);
-    }
-
+    /**
+    URI PART
+    */
     function _setURI(uint256 tokenId, string memory tokenURI) internal virtual {
         _tokenURIs[tokenId] = tokenURI;
         emit URI(uri(tokenId), tokenId);
     }
 
-}
+    function uri(uint256 tokenId) public view virtual override returns (string memory) {
+        string memory tokenURI = _tokenURIs[tokenId];
+        // If token URI is set, concatenate base URI and tokenURI (via string.concat).
+        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, tokenURI, _endURI) : super.uri(tokenId);
+    }
 
+    /**
+    GETTERS
+     */
+    function getYachts() external view returns(Yachts[] memory){
+    return yachts;
+    }
+
+}
