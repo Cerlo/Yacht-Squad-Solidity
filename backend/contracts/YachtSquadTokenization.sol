@@ -51,14 +51,18 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     string private _endURI = "?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ";
     // Mapping for token URIs
     mapping(uint256 tokenId => string) private _tokenURIs;
+    // Mapping project => address => _tokenBalances
+    mapping(uint256 id => mapping(address account => uint256)) private _tokenBalances;
 
     struct Yachts{
+        uint id;
         string name;
         uint mmsi; //mmsi/AIS yacht identification
         string uri;//json
         string legal;
         address paymentWallet; // YCC / YachtSquad
         uint maxSupply;
+        //structure d'avancement du projet de tokenisation du yacht (ysInvestigation,contractRedaction,waitingForListing,listing,preSale,publicSale,soldOut) ??
     }
     Yachts[] yachts;
 
@@ -74,16 +78,24 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
         return super.supportsInterface(interfaceId);
     }
 
-    // doit être minté sur une address générique qui envera SFT lors de la fin du listing
+    // doit être minté sur ERC1155Holders
     function Mintyachts(address _mintWallet, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _amount) public returns (uint){
-        _tokenIds.increment();
-		yachts.push(Yachts(_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
         uint256 newItemId = _tokenIds.current();
+        _tokenIds.increment();
+        yachts.push(Yachts(newItemId,_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
         _mint(_mintWallet, newItemId, _amount, "");
+        _tokenBalances[newItemId][_mintWallet] += _amount;
         _setURI(newItemId, _uri);
-        _setTokenRoyalty(newItemId, msg.sender, 200);
+        _setTokenRoyalty(newItemId, msg.sender, 200); //2%
         return newItemId;
     }
+    
+    // Override de la fonction _burn pour suivre les balances || à revoir
+    /*
+    function _burn(address account, uint256 id, uint256 amount) internal virtual override {
+        super._burn(account, id, amount);
+        _tokenBalances[id][account] -= amount;
+    }*/
 
     /**
     URI PART
@@ -100,10 +112,39 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
 
     /**
-    GETTERS
+    GETERS
      */
     function getYachts() external view returns(Yachts[] memory){
-    return yachts;
+        return yachts;
+    }
+
+    /*
+    optimisation en frais de gaz à vérifier
+    */
+    function getInvestments(address investor) external view returns (Yachts[] memory) {
+        uint totalYachts = yachts.length;
+        uint count = 0;
+
+        // Première boucle pour compter le nombre de yachts détenus par l'investisseur
+        for (uint i = 0; i < totalYachts; i++) {
+            if (_tokenBalances[i][investor] > 0) {
+                count++;
+            }
+        }
+
+        // Créer un tableau de la taille exacte nécessaire 
+        Yachts[] memory ownedYachts = new Yachts[](count);
+        uint index = 0;
+
+        // Deuxième boucle pour remplir le tableau avec les yachts détenus
+        for (uint i = 0; i < totalYachts; i++) {
+            if (_tokenBalances[i][investor] > 0) {
+                ownedYachts[index] = yachts[i];
+                index++;
+            }
+        }
+
+        return ownedYachts;
     }
 
 }
