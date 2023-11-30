@@ -4,27 +4,27 @@ const secret = process.env.PINATA_SECRET;
 const pinataSDK = require('@pinata/sdk');
 const pinata = new pinataSDK(key, secret);
 const fs = require('fs');
-const readableStreamForFile = fs.createReadStream('image.png');
+const readableStreamForFile = fs.createReadStream("mvp/yachtSquad-listing0.png");
 
 const options = {
     pinataMetadata: {
-        name: "YachtSquad",
+        name: "Genesisyach-test",
     },
     pinataOptions: {
-        cidVersion: 0
+        cidVersion: 1
     }
 };
 
 
 pinata.pinFileToIPFS(readableStreamForFile, options).then((result) => {
     const body = {
-        name : "",
-        image : result.IpfsHash,
-        mmsi : "",
-        imo : "",
-        legal : "",
-        hashContrat : "",
-        paymentWallet : ""
+        name : options.pinataMetadata.name,//YachtName
+        image : result.IpfsHash,//CID image
+        mmsi : "227999700", //mmsi/AIS
+        imo : "",//pas pour la plaisance
+        legal : "",//hashcontract
+        sn : "",//SerialNumber
+        paymentWallet : ""//Dividende payment wallet
     };
 
     pinata.pinJSONToIPFS(body, options).then((json) => {
