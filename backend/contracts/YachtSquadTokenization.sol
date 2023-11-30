@@ -2,6 +2,7 @@
 pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
+import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
 import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
@@ -38,10 +39,17 @@ contract Royalties is IERC2981Royalties, ERC165{
     }
 }
 
- 
-contract YachtSquadTokenisation is Ownable, ERC1155, Royalties {
+contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
+
     using Counters for Counters.Counter;
     Counters.Counter private _tokenIds;
+
+    // Optional base URI
+    string private _baseURI = "https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/";
+    string private _endURI = "?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ";
+    // Mapping for token URIs
+    mapping(uint256 tokenId => string) private _tokenURIs;
+
     struct Yachts{
         string name;
         uint mmsi; //mmsi/AIS
@@ -50,9 +58,11 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties {
         address paymentWallet; // YCC / YachtSquad
     }
 
+    
+
     Yachts[] yachts;
 
-    constructor() Ownable(msg.sender) ERC1155("https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/{id}?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ"){} //replace votre hash par le cid
+    constructor() Ownable(msg.sender) ERC1155(""){} 
 
     function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, Royalties) returns (bool){
         return super.supportsInterface(interfaceId);
@@ -63,13 +73,21 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties {
 		yachts.push(Yachts(_name, _mmsi, _uri, _legal, _paymentWallet));
         uint256 newItemId = _tokenIds.current();
         _mint(_investor, newItemId, _number, "");
+        _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200);
         return newItemId;
     }
 
-        function init()public {
-        Mintyachts(msg.sender, "YachtGenesys", 170, "bafkreihld7ihwhpy4dq4xsux5rbriijov6z4qiv4pkcsgzd6t34aizq2mi","coucou", msg.sender, 2*10**3 );
-        Mintyachts(0xAb8483F64d9C6d1EcF9b849Ae677dD3315835cb2, "An other yacht", 170, "QmaBowBdUxagTy2QYogUkFw1WQHg8Qd2Bs61Eh5Ycspbsi","coucou", msg.sender, 2*10**4 );
+
+    function uri(uint256 tokenId) public view virtual override returns (string memory) {
+        string memory tokenURI = _tokenURIs[tokenId];
+        // If token URI is set, concatenate base URI and tokenURI (via string.concat).
+        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, string.concat(tokenURI, _endURI)) : super.uri(tokenId);
+    }
+
+    function _setURI(uint256 tokenId, string memory tokenURI) internal virtual {
+        _tokenURIs[tokenId] = tokenURI;
+        emit URI(uri(tokenId), tokenId);
     }
 
 }
