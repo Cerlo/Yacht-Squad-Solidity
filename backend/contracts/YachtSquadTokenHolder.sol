@@ -1,10 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
+import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
+import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 
-contract YachtSquadTokenHolder is ERC1155Holder {
+contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
+    // Link to maincontract
+    IERC1155 public yachtTokenContract; //Référence au contrat ERC1155 des tokens de yacht.
+    address public yachtSquadTokenisationContract;
 
     // Structure pour stocker les informations sur les tokens reçus
     struct TokenInfo {
@@ -17,6 +22,11 @@ contract YachtSquadTokenHolder is ERC1155Holder {
 
     // Event pour signaler la réception d'un token
     event TokenReceived(address operator, address from, uint256 id, uint256 value, bytes data);
+
+    //Add ref to YachtSquadTokenisation
+    constructor(address _yachtSquadTokenisationContractAddress) Ownable(msg.sender) {
+        yachtTokenContract = IERC1155(_yachtSquadTokenisationContractAddress);
+    }
 
     /*
     -
@@ -51,6 +61,33 @@ contract YachtSquadTokenHolder is ERC1155Holder {
         return this.onERC1155BatchReceived.selector;
     }
 
+    /*
+    -
+    ----- Manage token transfert 
+    -
+    */
+    function setYachtSquadTokenisationContract(address _contractAddress) external onlyOwner {
+        yachtSquadTokenisationContract = _contractAddress;
+    }
+
+    function transferToken(address to, uint256 id, uint256 amount) external {
+        require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
+        require(receivedTokens[id].amount >= amount, "Insufficient token balance");
+
+        yachtTokenContract.safeTransferFrom(address(this), to, id, amount, "");
+        receivedTokens[id].amount -= amount;
+    }
+    function transferTokenBatch(address to, uint256[] calldata ids, uint256[] calldata amounts) external {
+        require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
+
+        for (uint256 i = 0; i < ids.length; ++i) {
+            require(receivedTokens[ids[i]].amount >= amounts[i], "Insufficient token balance for id");
+            receivedTokens[ids[i]].amount -= amounts[i];
+        }
+
+        yachtTokenContract.safeBatchTransferFrom(address(this), to, ids, amounts, "");
+    }
+
     // Fonction pour récupérer les informations d'un token spécifique
     function getTokenInfo(uint256 tokenId) external view returns (TokenInfo memory) {
         return receivedTokens[tokenId];
@@ -61,5 +98,4 @@ contract YachtSquadTokenHolder is ERC1155Holder {
     ----- Gestion des tokens
     -
     */
-
 }

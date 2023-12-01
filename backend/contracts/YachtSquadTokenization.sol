@@ -97,6 +97,19 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
         _tokenBalances[id][account] -= amount;
     }*/
 
+    /*
+    -
+    ----- Premier jet de la fonction de transfert des token depuis YachtSquadTokenHolder
+    -
+    */
+    function transferTokensFromHolder(address holderContract, address to, uint256 id, uint256 amount) public onlyOwner {
+        YachtSquadTokenHolder(holderContract).transferToken(to, id, amount);
+    }
+
+    function transferTokensBatchFromHolder(address holderContract, address to, uint256[] calldata ids, uint256[] calldata amounts) public onlyOwner {
+        YachtSquadTokenHolder(holderContract).transferTokenBatch(to, ids, amounts);
+    }
+
     /**
     URI PART
     */
