@@ -37,7 +37,7 @@ contract Royalties is IERC2981Royalties, ERC165{
         receiver = royalties.recipient;
         royaltyAmount = (value * royalties.amount) / 200;
     }
-}
+}   
 
 
 
@@ -66,7 +66,9 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
     Yachts[] yachts;
 
-    //event MintNewBatch(uint _tokenIds, string yachtName);
+    event NewBatchMinted(uint _tokenIds, string yachtName, uint maxSupply);
+    event RecivedToken(address from, address to, uint _tokenIds, uint amount);
+    event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
 
     /*
     * @ERC1155("") => mettre une URI de base pour le projet
@@ -79,7 +81,7 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
 
     // doit être minté sur ERC1155Holders
-    function Mintyachts(address _mintWallet, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _amount) public returns (uint){
+    function Mintyachts(address _mintWallet, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _amount) public {
         uint256 newItemId = _tokenIds.current();
         _tokenIds.increment();
         yachts.push(Yachts(newItemId,_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
@@ -87,28 +89,38 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
         _tokenBalances[newItemId][_mintWallet] += _amount;
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200); //2%
-        return newItemId;
+        emit NewBatchMinted(newItemId,yachts[newItemId].name,yachts[newItemId].maxSupply);
     }
+
+    // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances
+    function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes memory data) public virtual override {
+        _tokenBalances[id][from] -= amount;
+        _tokenBalances[id][to] += amount;
+        super.safeTransferFrom(from, to, id, amount, data);
+        emit RecivedToken(from, to, id, amount);
+    }
+
+    // Surcharge de la fonction safeBatchTransferFrom pour mettre à jour _tokenBalances
+    function safeBatchTransferFrom(address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public virtual override {
+        for (uint256 i = 0; i < ids.length; ++i) {
+            _tokenBalances[ids[i]][from] -= amounts[i];
+            _tokenBalances[ids[i]][to] += amounts[i];
+        }
+        super.safeBatchTransferFrom(from, to, ids, amounts, data);
+
+        emit RecivedTokens(from, to, ids, amounts);
+
+    }
+
     
     // Override de la fonction _burn pour suivre les balances || à revoir
     /*
     function _burn(address account, uint256 id, uint256 amount) internal virtual override {
         super._burn(account, id, amount);
         _tokenBalances[id][account] -= amount;
+
     }*/
 
-    /*
-    -
-    ----- Premier jet de la fonction de transfert des token depuis YachtSquadTokenHolder
-    -
-    */
-    function transferTokensFromHolder(address holderContract, address to, uint256 id, uint256 amount) public onlyOwner {
-        YachtSquadTokenHolder(holderContract).transferToken(to, id, amount);
-    }
-
-    function transferTokensBatchFromHolder(address holderContract, address to, uint256[] calldata ids, uint256[] calldata amounts) public onlyOwner {
-        YachtSquadTokenHolder(holderContract).transferTokenBatch(to, ids, amounts);
-    }
 
     /**
     URI PART

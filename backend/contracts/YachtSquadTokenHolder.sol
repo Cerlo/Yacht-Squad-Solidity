@@ -73,9 +73,8 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     function transferToken(address to, uint256 id, uint256 amount) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
         require(receivedTokens[id].amount >= amount, "Insufficient token balance");
-
-        yachtTokenContract.safeTransferFrom(address(this), to, id, amount, "");
         receivedTokens[id].amount -= amount;
+        yachtTokenContract.safeTransferFrom(address(this), to, id, amount, "");
     }
     function transferTokenBatch(address to, uint256[] calldata ids, uint256[] calldata amounts) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
