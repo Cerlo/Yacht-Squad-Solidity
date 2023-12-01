@@ -81,7 +81,15 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
 
     // doit être minté sur ERC1155Holders
-    function Mintyachts(address _mintWallet, string memory _name, uint _mmsi, string memory _uri,  string memory _legal, address _paymentWallet, uint _amount) public {
+    function Mintyachts(
+        address _mintWallet, 
+        string memory _name, 
+        uint _mmsi, 
+        string memory _uri,  
+        string memory _legal, 
+        address _paymentWallet, 
+        uint _amount
+    ) public {
         uint256 newItemId = _tokenIds.current();
         _tokenIds.increment();
         yachts.push(Yachts(newItemId,_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
@@ -93,7 +101,13 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
 
     // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances
-    function safeTransferFrom(address from, address to, uint256 id, uint256 amount, bytes memory data) public virtual override {
+    function safeTransferFrom(
+        address from, 
+        address to, 
+        uint256 id, 
+        uint256 amount, 
+        bytes memory data
+    ) public virtual override {
         _tokenBalances[id][from] -= amount;
         _tokenBalances[id][to] += amount;
         super.safeTransferFrom(from, to, id, amount, data);
@@ -101,7 +115,13 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     }
 
     // Surcharge de la fonction safeBatchTransferFrom pour mettre à jour _tokenBalances
-    function safeBatchTransferFrom(address from, address to, uint256[] memory ids, uint256[] memory amounts, bytes memory data) public virtual override {
+    function safeBatchTransferFrom(
+        address from, 
+        address to, 
+        uint256[] memory ids, 
+        uint256[] memory amounts, 
+        bytes memory data
+    ) public virtual override {
         for (uint256 i = 0; i < ids.length; ++i) {
             _tokenBalances[ids[i]][from] -= amounts[i];
             _tokenBalances[ids[i]][to] += amounts[i];

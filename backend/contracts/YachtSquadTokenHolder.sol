@@ -21,7 +21,13 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     mapping(uint256 => TokenInfo) public receivedTokens;
 
     // Event pour signaler la réception d'un token
-    event TokenReceived(address operator, address from, uint256 id, uint256 value, bytes data);
+    event TokenReceived(
+        address operator, 
+        address from, 
+        uint256 id, 
+        uint256 value, 
+        bytes data
+    );
 
     //Add ref to YachtSquadTokenisation
     constructor(address _yachtSquadTokenisationContractAddress) Ownable(msg.sender) {
@@ -62,21 +68,28 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     }
 
     /*
-    -
     ----- Manage token transfert 
-    -
     */
     function setYachtSquadTokenisationContract(address _contractAddress) external onlyOwner {
         yachtSquadTokenisationContract = _contractAddress;
     }
 
-    function transferToken(address to, uint256 id, uint256 amount) external {
+    function transferToken(
+        address to, 
+        uint256 id, 
+        uint256 amount
+    ) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
         require(receivedTokens[id].amount >= amount, "Insufficient token balance");
         receivedTokens[id].amount -= amount;
         yachtTokenContract.safeTransferFrom(address(this), to, id, amount, "");
     }
-    function transferTokenBatch(address to, uint256[] calldata ids, uint256[] calldata amounts) external {
+
+    function transferTokenBatch(
+        address to, 
+        uint256[] calldata ids, 
+        uint256[] calldata amounts
+    ) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
 
         for (uint256 i = 0; i < ids.length; ++i) {
@@ -91,10 +104,4 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     function getTokenInfo(uint256 tokenId) external view returns (TokenInfo memory) {
         return receivedTokens[tokenId];
     }
-
-    /*
-    -
-    ----- Gestion des tokens
-    -
-    */
 }
