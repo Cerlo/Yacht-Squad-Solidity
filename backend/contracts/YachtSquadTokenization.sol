@@ -54,6 +54,7 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     // Mapping project => address => _tokenBalances
     mapping(uint256 id => mapping(address account => uint256)) private _tokenBalances;
 
+
     struct Yachts{
         uint id;
         string name;
@@ -62,10 +63,11 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
         string legal;
         address paymentWallet; // YCC / YachtSquad
         uint maxSupply;
-        //structure d'avancement du projet de tokenisation du yacht (ysInvestigation,contractRedaction,waitingForListing,listing,preSale,publicSale,soldOut) ??
+        
     }
     Yachts[] yachts;
 
+    // penser à utiliser des données indexed pour une meilleure exploitation côté front
     event NewBatchMinted(uint _tokenIds, string yachtName, uint maxSupply);
     event RecivedToken(address from, address to, uint _tokenIds, uint amount);
     event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
@@ -127,20 +129,8 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
             _tokenBalances[ids[i]][to] += amounts[i];
         }
         super.safeBatchTransferFrom(from, to, ids, amounts, data);
-
         emit RecivedTokens(from, to, ids, amounts);
-
     }
-
-    
-    // Override de la fonction _burn pour suivre les balances || à revoir
-    /*
-    function _burn(address account, uint256 id, uint256 amount) internal virtual override {
-        super._burn(account, id, amount);
-        _tokenBalances[id][account] -= amount;
-
-    }*/
-
 
     /**
     URI PART
