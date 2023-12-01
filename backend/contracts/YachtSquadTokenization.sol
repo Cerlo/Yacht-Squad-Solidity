@@ -57,18 +57,18 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
 
     struct Yachts{
         uint id;
-        string name;
         uint mmsi; //mmsi/AIS yacht identification
-        string uri;//json
-        string legal;
-        address paymentWallet; // YCC / YachtSquad
+        uint tokenPrice;
         uint maxSupply;
-        
+        string name;
+        string uri;
+        string legal;
+        address paymentWallet; 
     }
     Yachts[] yachts;
 
     // penser à utiliser des données indexed pour une meilleure exploitation côté front
-    event NewBatchMinted(uint _tokenIds, string yachtName, uint maxSupply);
+    event NewBatchMinted(uint _tokenIds, uint maxSupply, string yachtName);
     event RecivedToken(address from, address to, uint _tokenIds, uint amount);
     event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
 
@@ -85,21 +85,32 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     // doit être minté sur ERC1155Holders
     function Mintyachts(
         address _mintWallet, 
-        string memory _name, 
         uint _mmsi, 
+        uint _tokenPrice,
+        uint _maxSupply,
+        string memory _name, 
         string memory _uri,  
         string memory _legal, 
-        address _paymentWallet, 
-        uint _amount
+        address _paymentWallet
     ) public {
         uint256 newItemId = _tokenIds.current();
         _tokenIds.increment();
-        yachts.push(Yachts(newItemId,_name, _mmsi, _uri, _legal, _paymentWallet, _amount));
+        yachts.push(Yachts(
+            newItemId,
+            _mmsi,
+            _tokenPrice,
+            _maxSupply,
+            _name,
+            _uri,
+            _legal,
+            _paymentWallet
+        ));
+
         _mint(_mintWallet, newItemId, _amount, "");
-        _tokenBalances[newItemId][_mintWallet] += _amount;
+        _tokenBalances[newItemId][_mintWallet] += _maxSupply;
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200); //2%
-        emit NewBatchMinted(newItemId,yachts[newItemId].name,yachts[newItemId].maxSupply);
+        emit NewBatchMinted(newItemId, yachts[newItemId].maxSupply ,yachts[newItemId].name);
     }
 
     // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances
