@@ -1,16 +1,22 @@
 const {
+    time,
     loadFixture,
-} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
-const { expect, assert } = require("chai");
-const { ethers } = require("hardhat");
+  } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
+  const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
+  const { expect } = require("chai");
 
-describe("Voting test", function () {
+describe("YachtSquadTokenisation contract", function () {
+
+    /**
+     * 
+     * @returns 
+     */
     async function deployContract() {
         const [operator, tokenHolder, tokenBatchHolder, ...otherAccounts] = await ethers.getSigners();
-        const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
-        const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenisation");
+        //const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
+        const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenization");
         const yachtSquadToken = await YachtSquadTokenisation.deploy(YachtSquadTokenisation);
-        return { yachtSquadToken, owner, yachtCharter1, investor1, investor2, investor3 };
+        return { yachtSquadToken, operator, tokenHolder,tokenBatchHolder, ...otherAccounts};
     }
 
         // Test suite for testing the deployment phase of the Voting contract
@@ -18,9 +24,9 @@ describe("Voting test", function () {
         // Test case to ensure the contract is deployed with the correct owner
         it("Should set the owner", async function () {
             // Deploying the contract and retrieving the owner
-            const { voting, owner } = await loadFixture(deployContract);
+            const { yachtSquadToken, operator, tokenHolder, test5 } = await loadFixture(deployContract);
             // Asserting that the deployed contract has the correct owner
-            expect(await voting.owner()).to.be.equal(owner.address);
+            expect(await yachtSquadToken.owner()).to.be.equal(operator.address);
         });
     })
 

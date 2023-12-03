@@ -10,7 +10,7 @@ async function main() {
 
   
  
-  const yachtSquadTokenisation = await hre.ethers.deployContract("YachtSquadTokenisation");
+  const yachtSquadTokenisation = await hre.ethers.deployContract("YachtSquadTokenization");
 
   await yachtSquadTokenisation.waitForDeployment();
 

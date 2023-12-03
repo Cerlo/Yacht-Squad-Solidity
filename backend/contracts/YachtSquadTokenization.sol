@@ -3,7 +3,6 @@ pragma solidity ^0.8.20;
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC1155/ERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/extensions/ERC1155URIStorage.sol";
-import "@openzeppelin/contracts/utils/Counters.sol";
 import "@openzeppelin/contracts/utils/introspection/ERC165.sol";
 
 
@@ -41,10 +40,9 @@ contract Royalties is IERC2981Royalties, ERC165{
 
 
 
-contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
+contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
 
-    using Counters for Counters.Counter;
-    Counters.Counter private _tokenIds;
+    uint private _tokenIds;
 
     // Optional base URI
     string private _baseURI = "https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/";
@@ -103,8 +101,8 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
         string memory _legal, 
         address _paymentWallet
     ) public {
-        uint256 newItemId = _tokenIds.current();
-        _tokenIds.increment();
+        uint256 newItemId = _tokenIds;
+        _tokenIds += 1 ;
         yachts.push(Yachts(
             newItemId,
             _mmsi,
@@ -117,7 +115,7 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
             YachtStatus.IntialMint
         ));
 
-        _mint(_mintWallet, newItemId, _amount, "");
+        _mint(_mintWallet, newItemId, _maxSupply, "");
         _tokenBalances[newItemId][_mintWallet] += _maxSupply;
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200); //2%
