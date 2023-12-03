@@ -54,16 +54,26 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
     // Mapping project => address => _tokenBalances
     mapping(uint256 id => mapping(address account => uint256)) private _tokenBalances;
 
+    enum YachtStatus {
+        IntialMint,     // The yacht is listed and available for sale
+        PreSale,        // Sale for holders of at least one SFT of yacht
+        PublicSale,     // Public sale open to new investors
+        Chartered,      // The yacht is currently chartered
+        Maintenance,    // The yacht is under maintenance
+        Sold            // The yacht has been sold
+    }
+
 
     struct Yachts{
         uint id;
-        uint mmsi; //mmsi/AIS yacht identification
+        uint mmsi; //mmsi/AIS => yacht identification
         uint tokenPrice;
         uint maxSupply;
         string name;
         string uri;
         string legal;
-        address paymentWallet; 
+        address paymentWallet;
+        YachtStatus status;
     }
     Yachts[] yachts;
 
@@ -103,7 +113,8 @@ contract YachtSquadTokenisation is Ownable, ERC1155, Royalties  {
             _name,
             _uri,
             _legal,
-            _paymentWallet
+            _paymentWallet,
+            YachtStatus.IntialMint
         ));
 
         _mint(_mintWallet, newItemId, _amount, "");
