@@ -76,7 +76,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     Yachts[] yachts;
 
     // penser à utiliser des données indexed pour une meilleure exploitation côté front
-    event NewBatchMinted(uint _tokenIds, uint maxSupply, string yachtName);
+    event NewMint(uint _tokenIds, uint maxSupply, string yachtName);
     event RecivedToken(address from, address to, uint _tokenIds, uint amount);
     event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
 
@@ -91,7 +91,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     }
 
     // doit être minté sur ERC1155Holders
-    function Mintyachts(
+    function mintyachts(
         address _mintWallet, 
         uint _mmsi, 
         uint _tokenPrice,
@@ -100,7 +100,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         string memory _uri,  
         string memory _legal, 
         address _paymentWallet
-    ) public {
+    ) public onlyOwner {
         uint256 newItemId = _tokenIds;
         _tokenIds += 1 ;
         yachts.push(Yachts(
@@ -119,7 +119,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         _tokenBalances[newItemId][_mintWallet] += _maxSupply;
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200); //2%
-        emit NewBatchMinted(newItemId, yachts[newItemId].maxSupply ,yachts[newItemId].name);
+        emit NewMint(newItemId, yachts[newItemId].maxSupply ,yachts[newItemId].name);
     }
 
     // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances
@@ -171,6 +171,10 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
      */
     function getYachts() external view returns(Yachts[] memory){
         return yachts;
+    }
+
+    function getYacht(uint _id) external view returns(Yachts memory){
+        return yachts[_id];
     }
 
     /*
