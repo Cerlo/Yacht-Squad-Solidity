@@ -7,16 +7,27 @@
 const hre = require("hardhat");
 
 async function main() {
+  
+  const [deployer] = await hre.ethers.getSigners();
+  console.log("Deploying contracts with the account:", deployer.address);
 
+  // Deploy YachtSquadTokenization
+  const YachtSquadTokenization = await hre.ethers.getContractFactory("YachtSquadTokenization");
+  const yachtSquadTokenization = await YachtSquadTokenization.deploy();
+  console.log("YachtSquadTokenization deployed to:", yachtSquadTokenization.target);
+
+  // Deploy YachtSquadTokenHolder
+  const YachtSquadTokenHolder = await hre.ethers.getContractFactory("YachtSquadTokenHolder");
+  const yachtSquadTokenHolder = await YachtSquadTokenHolder.deploy(yachtSquadTokenization.target);
+  console.log("YachtSquadTokenHolder deployed to:", yachtSquadTokenHolder.target);
+
+  // Deploy YachtTokenMarketplace
+  const YachtTokenMarketplace = await hre.ethers.getContractFactory("YachtTokenMarketplace");
+  const yachtTokenMarketplace = await YachtTokenMarketplace.deploy(yachtSquadTokenization.target, yachtSquadTokenHolder.target);
+  console.log("YachtTokenMarketplace deployed to:", yachtTokenMarketplace.target);
   
  
-  const yachtSquadTokenisation = await hre.ethers.deployContract("YachtSquadTokenization");
 
-  await yachtSquadTokenisation.waitForDeployment();
-
-  console.log(
-    `Voting contract deployed to ${yachtSquadTokenisation.target}`
-  );
 }
 
 // We recommend this pattern to be able to use async/await everywhere
