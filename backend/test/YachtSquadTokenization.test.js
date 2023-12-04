@@ -220,29 +220,7 @@ describe("YachtSquadTokenisation contract", function () {
         });
     
         describe("SafeTransfert one SFT", function () {
-            it("Should mint a yacht correctly and emit NewMint event", async function () {    
-                await expect(_yachtSquadTokenization.connect(_owner).mintyachts(
-                    _scHolder.address, 
-                    yacht0.mmsi, 
-                    yacht0.tokenPrice,
-                    yacht0.maxSupply,
-                    yacht0.name, 
-                    yacht0.uri,  
-                    yacht0.legal, 
-                    _yachtCharterCompany.address
-                )).to.emit(_yachtSquadTokenization, "NewMint").withArgs(0, yacht0.maxSupply, yacht0.name);
-    
-                const yacht = await _yachtSquadTokenization.getYacht(0);
-                expect(yacht.name).to.equal(yacht0.name);
-                expect(yacht.mmsi).to.equal(yacht0.mmsi);
-                expect(yacht.tokenPrice).to.equal(yacht0.tokenPrice);
-                expect(yacht.maxSupply).to.equal(yacht0.maxSupply);
-                expect(yacht.uri).to.equal(yacht0.uri);
-                expect(yacht.legal).to.equal(yacht0.legal);
-                expect(yacht.paymentWallet).to.equal(_yachtCharterCompany.address);
-                expect(yacht.status).to.equal(0); // Assuming 0 is the enum value for IntialMint
-            });
-    
+                
             it("Should update balances correctly after safeTransferFrom", async function () {
                 const tokenId = 0;
                 const amount = 100;
@@ -304,6 +282,93 @@ describe("YachtSquadTokenisation contract", function () {
                 )).to.emit(_yachtSquadTokenization, "RecivedToken").withArgs(_scHolder.address, _investor1.address, tokenId, amount);
             });
         });
+
+        describe("SafeTransfert batch of sft", function() {
+            it("Should update balances correctly after safeBatchTransferFrom", async function () {
+                const tokenIds = [0,1];
+                const amounts = [10000,5000];
+    
+                // Minting yacht to yachtTokenHolderAddress
+                await _yachtSquadTokenization.connect(_owner).mintyachts(
+                    _scHolder.address, 
+                    yacht0.mmsi, 
+                    yacht0.tokenPrice,
+                    yacht0.maxSupply,
+                    yacht0.name, 
+                    yacht0.uri,  
+                    yacht0.legal, 
+                    _yachtCharterCompany.address
+                );
+                await _yachtSquadTokenization.connect(_owner).mintyachts(
+                    _scHolder.address, 
+                    yacht1.mmsi, 
+                    yacht1.tokenPrice,
+                    yacht1.maxSupply,
+                    yacht1.name, 
+                    yacht1.uri,  
+                    yacht1.legal, 
+                    _yachtCharterCompany.address
+                );
+
+                await _yachtSquadTokenization.connect(_scHolder).setApprovalForAll(_owner.address, true);
+                
+                // Transferring tokens from yachtTokenHolderAddress to otherAccount
+                await _yachtSquadTokenization.connect(_owner).safeBatchTransferFrom(
+                    _scHolder.address, 
+                    _investor1.address, 
+                    tokenIds, 
+                    amounts, 
+                    "0x"
+                );
+    
+                const balanceHolder0 = await _yachtSquadTokenization.balanceOf(_scHolder.address, tokenIds[0]);
+                const balanceOther0 = await _yachtSquadTokenization.balanceOf(_investor1.address, tokenIds[0]);
+                const balanceHolder1 = await _yachtSquadTokenization.balanceOf(_scHolder.address, tokenIds[1]);
+                const balanceOther1 = await _yachtSquadTokenization.balanceOf(_investor1.address, tokenIds[1]);
+    
+                expect(balanceHolder0).to.equal(yacht0.maxSupply - amounts[0]);
+                expect(balanceOther0).to.equal(amounts[0]);
+                expect(balanceHolder1).to.equal(yacht0.maxSupply - amounts[1]);
+                expect(balanceOther1).to.equal(amounts[1]);
+            });
+    
+            it("Should emit RecivedToken event on safeBatchTransferFrom", async function () {
+                const tokenIds = [0,1];
+                const amounts = [10000,5000];
+    
+                // Minting yacht to yachtTokenHolderAddress
+                await _yachtSquadTokenization.connect(_owner).mintyachts(
+                    _scHolder.address, 
+                    yacht0.mmsi, 
+                    yacht0.tokenPrice,
+                    yacht0.maxSupply,
+                    yacht0.name, 
+                    yacht0.uri,  
+                    yacht0.legal, 
+                    _yachtCharterCompany.address
+                );
+                await _yachtSquadTokenization.connect(_owner).mintyachts(
+                    _scHolder.address, 
+                    yacht1.mmsi, 
+                    yacht1.tokenPrice,
+                    yacht1.maxSupply,
+                    yacht1.name, 
+                    yacht1.uri,  
+                    yacht1.legal, 
+                    _yachtCharterCompany.address
+                );
+    
+                await _yachtSquadTokenization.connect(_scHolder).setApprovalForAll(_owner.address, true);
+                // Transferring tokens from yachtTokenHolderAddress to otherAccount
+                await expect(_yachtSquadTokenization.connect(_owner).safeBatchTransferFrom(
+                    _scHolder.address, 
+                    _investor1.address,  
+                    tokenIds, 
+                    amounts, 
+                    "0x"
+                )).to.emit(_yachtSquadTokenization, "RecivedTokens").withArgs(_scHolder.address, _investor1.address, tokenIds, amounts);
+            });
+        })
     })
 
 
