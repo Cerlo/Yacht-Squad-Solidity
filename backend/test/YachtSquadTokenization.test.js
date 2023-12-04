@@ -27,7 +27,7 @@ describe("YachtSquadTokenisation contract", function () {
         tokenPrice:2000, 
         maxSupply:100000,
         name: 'Black Pearl',
-        uri: 'Image du boat',
+        uri: 'cb8480dedb3a9f7fbb1d5707e228d80c119fc57184651bdecfdb1cef9c0dc899', // string : Image du boat
         legal: '07762f76dfdbb1597218313ea27680c28bac238600230cc7a20c7e2cd9de4d73', //Black Pearl is owned by YachtSquad 
         paymentWallet:"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
         status : status.IntialMint
@@ -39,7 +39,7 @@ describe("YachtSquadTokenisation contract", function () {
         tokenPrice:1000, 
         maxSupply:100000,
         name: 'Aquijo',
-        uri:'Image du boat',
+        uri:'cb8480dedb3a9f7fbb1d5707e228d80c119fc57184651bdecfdb1cef9c0dc899',
         legal: 'a899fc0d56ef54e9a2a9e7b8ef16e79f4ca11a56d86d79f6366d14b0c3c690aa', //Aquijo is owned by YachtSquad
         paymentWallet:"0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         status : status.PreSale
@@ -51,7 +51,7 @@ describe("YachtSquadTokenisation contract", function () {
         tokenPrice:100, 
         maxSupply:175000,
         name: 'Running on Waves',
-        uri: 'Image du boat',
+        uri: 'cb8480dedb3a9f7fbb1d5707e228d80c119fc57184651bdecfdb1cef9c0dc899',
         legal: 'a0e02d6e77a73995d16888e188074198f0d96cecf79edd52d4072d3547207f54', //Running on Waves is owned by YachtSquad
         paymentWallet:"0x3C44CdDdB6a900fa2b585dd299e03d12FA4293BC",
         status : status.PublicSale
@@ -368,7 +368,80 @@ describe("YachtSquadTokenisation contract", function () {
                     "0x"
                 )).to.emit(_yachtSquadTokenization, "RecivedTokens").withArgs(_scHolder.address, _investor1.address, tokenIds, amounts);
             });
-        })
+        }); //end describe SafeTransfert batch of sft
+
+        describe("URI Tests", function(){
+            let yachtSquadTokenization;
+            let owner;
+            let _baseURI = "https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/";
+            let _endURI = "?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ";
+        
+            beforeEach(async function () {
+                const fixture = await loadFixture(deployTokenization_init);
+                yachtSquadTokenization = fixture.yachtSquadToken;
+                owner = fixture.owner;
+            });
+        
+            it("Should correctly set and retrieve token URI", async function() {
+                const tokenId = 0;
+        
+                // Mint a yacht to set its URI
+                await yachtSquadTokenization.connect(owner).mintyachts(
+                    owner.address, 
+                    yacht0.mmsi, 
+                    yacht0.tokenPrice,
+                    yacht0.maxSupply,
+                    yacht0.name, 
+                    yacht0.uri,  
+                    yacht0.legal, 
+                    owner.address
+                );
+        
+                // Retrieve the URI of the minted yacht
+                const retrievedURI = await yachtSquadTokenization.uri(0);
+        
+                // Check if the retrieved URI matches the test URI
+                expect(retrievedURI).to.equal(`${_baseURI}${yacht0.uri}${_endURI}`);
+            });
+        });
+
+        describe("Getters", function(){
+            let yachtSquadTokenization;
+            let owner;
+            let investor1;
+
+            beforeEach(async function () {
+                const fixture = await loadFixture(deployContract_SCholderYccnvestor);
+                yachtSquadTokenization = fixture.yachtSquadToken;
+                owner = fixture.owner;
+                investor1 = fixture.investor1;
+
+                // Mint some yachts for folling tests
+                await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht0.mmsi, yacht0.tokenPrice, yacht0.maxSupply, yacht0.name, yacht0.uri, yacht0.legal, owner.address);
+                await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht1.mmsi, yacht1.tokenPrice, yacht1.maxSupply, yacht1.name, yacht1.uri, yacht1.legal, owner.address);
+            });
+
+            it("Should return all yachts", async function() {
+                const yachts = await yachtSquadTokenization.getYachts();
+                expect(yachts.length).to.equal(2);
+                expect(yachts[0].name).to.equal(yacht0.name);
+                expect(yachts[1].name).to.equal(yacht1.name);
+            });
+
+            it("Should return a specific yacht by ID", async function() {
+                const yacht = await yachtSquadTokenization.getYacht(0);
+                expect(yacht.name).to.equal(yacht0.name);
+            });
+
+            it("Should return yachts owned by an investor", async function() {
+                // Transfer some tokens to investor1
+                await yachtSquadTokenization.connect(owner).safeTransferFrom(owner.address, investor1.address, 0, 100, "0x");
+
+                const investments = await yachtSquadTokenization.getInvestments(investor1.address);
+                expect(investments.length).to.equal(1);
+                expect(investments[0].name).to.equal(yacht0.name);
+            });
+        }); // getters
     })
 
 
