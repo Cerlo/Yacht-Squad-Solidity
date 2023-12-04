@@ -32,33 +32,35 @@ async function uploadAssets() {
         // Iterate over each file in the folder
         for (const file of files) {
             if (file.endsWith('.png')) {
-                // Set options for image upload
-                const imageOptions = {
-                    pinataMetadata: { name: path.basename(file, '.png') },
-                    pinataOptions: { cidVersion: 1 }
-                };
-
-                // Upload the image file to Pinata
-                const imageResult = await uploadFile(path.join(assetsFolderPath, file), imageOptions);
-                console.log(`Image uploaded: ${imageResult.IpfsHash}`);
 
                 // Construct the corresponding JSON filename
                 const jsonFile = file.replace('.png', '.json');
                 const jsonPath = path.join(assetsFolderPath, jsonFile);
 
-                // JSON?
                 if (fs.existsSync(jsonPath)) {
-                    // Read and parse the JSON file
+                    // Construct the corresponding JSON filename
                     const jsonData = JSON.parse(fs.readFileSync(jsonPath, 'utf8'));
-                    // Update JSON data with IPFS hash
-                    jsonData.image = imageResult.IpfsHash;
+                    const yachtName = jsonData.name; // Extract name from JSON data
 
-                    // Set options for JSON upload
-                    const jsonOptions = {
-                        pinataMetadata: { name: path.basename(jsonFile, '.json') },
+                    // Set options for image upload
+                    const imageOptions = {
+                        pinataMetadata: { name: yachtName },
                         pinataOptions: { cidVersion: 1 }
                     };
 
+                    // Upload the image file to Pinata
+                    const imageResult = await uploadFile(path.join(assetsFolderPath, file), imageOptions);
+                    console.log(`Image uploaded: ${imageResult.IpfsHash}`);
+
+                    // Update JSON data with IPFS hash
+                    jsonData.uri = `ipfs://${imageResult.IpfsHash}`; // Update the URI with the new IPFS hash
+                    
+                        // Set options for JSON upload
+                    const jsonOptions = {
+                        pinataMetadata: { name: yachtName },
+                        pinataOptions: { cidVersion: 1 }
+                    };
+                    
                     // Upload JSON file to Pinata
                     const jsonResult = await uploadJSON(jsonData, jsonOptions);
                     console.log(`JSON uploaded: ${jsonResult.IpfsHash}`);
