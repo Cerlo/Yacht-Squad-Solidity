@@ -1,18 +1,9 @@
-const {
-    time,
-    loadFixture,
-  } = require("@nomicfoundation/hardhat-toolbox/network-helpers");
+  const {loadFixture} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
+  const { ethers } = require("hardhat");
+  
   const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
   const { expect } = require("chai");
 
-  const status ={
-    IntialMint:0,     // The yacht is listed and available for sale
-    PreSale:1,        // Sale for holders of at least one SFT of yacht
-    PublicSale:2,     // Public sale open to new investors
-    Chartered:3,      // The yacht is currently chartered
-    Maintenance:4,    // The yacht is under maintenance
-    Sold:5            // The yacht has been sold
-}
 
 
 
@@ -21,6 +12,14 @@ const {
 
 describe("YachtSquadTokenisation contract", function () {
     
+    const status ={
+        IntialMint:0,     // The yacht is listed and available for sale
+        PreSale:1,        // Sale for holders of at least one SFT of yacht
+        PublicSale:2,     // Public sale open to new investors
+        Chartered:3,      // The yacht is currently chartered
+        Maintenance:4,    // The yacht is under maintenance
+        Sold:5            // The yacht has been sold
+    }
     const yacht0= {
         id:0,
         mmsi:319113100, //mmsi/AIS => yacht identification
@@ -128,6 +127,7 @@ describe("YachtSquadTokenisation contract", function () {
             expect(await yachtSquadTokenization.supportsInterface(invalidInterfaceId)).to.be.false;
         });
     })
+    
 
     describe("Minting Yachts", async function() {
         it("Should mint yacht0 correctly", async function() {
@@ -203,6 +203,42 @@ describe("YachtSquadTokenisation contract", function () {
 
     });
 
+    describe("Royalty Info", function() {
+        let yachtSquadTokenization;
+        let owner;
+    
+        beforeEach(async function () {
+            const fixture = await loadFixture(deployTokenization_init);
+            yachtSquadTokenization = fixture.yachtSquadToken;
+            owner = fixture.owner;
+    
+            // Mint a yacht to set its royalty info
+            await yachtSquadTokenization.connect(owner).mintyachts(
+                owner.address, 
+                yacht0.mmsi, 
+                yacht0.tokenPrice,
+                yacht0.maxSupply,
+                yacht0.name, 
+                yacht0.uri,  
+                yacht0.legal, 
+                owner.address
+            );
+        });
+    
+        it("Should return correct royalty info for a token", async function() {
+            const tokenId = 0;
+            const salePrice = await ethers.parseEther("1"); // 1 ETH for example
+            
+            // Assuming the royalty percentage is 2% as per your contract
+            const expectedRoyaltyAmount = salePrice;
+
+            const [receiver, royaltyAmount] = await yachtSquadTokenization.royaltyInfo(tokenId, salePrice);
+    
+            expect(receiver).to.equal(owner.address); // Assuming the owner receives the royalties
+            expect(royaltyAmount).to.equal(expectedRoyaltyAmount);
+        });
+    });
+
     describe("Safe Transfert process", async function(){
         let _yachtSquadTokenization;
         let _owner;
@@ -270,7 +306,7 @@ describe("YachtSquadTokenisation contract", function () {
                     yacht0.legal, 
                     _yachtCharterCompany.address
                 );
-    
+                // sett approvalForAll to the smartcontract owner 
                 await _yachtSquadTokenization.connect(_scHolder).setApprovalForAll(_owner.address, true);
                 // Transferring tokens from yachtTokenHolderAddress to otherAccount
                 await expect(_yachtSquadTokenization.connect(_owner).safeTransferFrom(
@@ -383,7 +419,6 @@ describe("YachtSquadTokenisation contract", function () {
             });
         
             it("Should correctly set and retrieve token URI", async function() {
-                const tokenId = 0;
         
                 // Mint a yacht to set its URI
                 await yachtSquadTokenization.connect(owner).mintyachts(
@@ -403,6 +438,8 @@ describe("YachtSquadTokenisation contract", function () {
                 // Check if the retrieved URI matches the test URI
                 expect(retrievedURI).to.equal(`${_baseURI}${yacht0.uri}${_endURI}`);
             });
+
+            
         });
 
         describe("Getters", function(){
@@ -441,7 +478,7 @@ describe("YachtSquadTokenisation contract", function () {
                 expect(investments.length).to.equal(1);
                 expect(investments[0].name).to.equal(yacht0.name);
             });
-        }); // getters
+        }); // end getters
     })
 
 
