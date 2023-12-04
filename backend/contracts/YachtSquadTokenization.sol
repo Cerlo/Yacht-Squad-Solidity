@@ -45,8 +45,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     uint private _tokenIds;
 
     // Optional base URI
-    string private _baseURI = "https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/";
-    string private _endURI = "?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ";
+    string private _baseURI = "ipfs://";
     // Mapping for token URIs
     mapping(uint256 tokenId => string) private _tokenURIs;
     // Mapping project => address => _tokenBalances
@@ -163,7 +162,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     function uri(uint256 tokenId) public view virtual override returns (string memory) {
         string memory tokenURI = _tokenURIs[tokenId];
         // If token URI is set, concatenate base URI and tokenURI (via string.concat).
-        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, tokenURI, _endURI) : super.uri(tokenId);
+        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, tokenURI) : super.uri(tokenId);
     }
 
     /**
