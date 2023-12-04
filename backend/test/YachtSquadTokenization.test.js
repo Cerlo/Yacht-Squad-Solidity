@@ -1,14 +1,7 @@
   const {loadFixture} = require("@nomicfoundation/hardhat-toolbox/network-helpers");
   const { ethers } = require("hardhat");
-  
   const { anyValue } = require("@nomicfoundation/hardhat-chai-matchers/withArgs");
   const { expect } = require("chai");
-
-
-
-
-
-
 
 describe("YachtSquadTokenisation contract", function () {
     
@@ -62,7 +55,6 @@ describe("YachtSquadTokenisation contract", function () {
      */
     async function deployTokenization_init() {
         const [owner ] = await ethers.getSigners();
-        //const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
         const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenization");
         const yachtSquadToken = await YachtSquadTokenisation.deploy(YachtSquadTokenisation);
         return { yachtSquadToken, owner};
@@ -70,7 +62,6 @@ describe("YachtSquadTokenisation contract", function () {
 
     async function deployContract_SCholderYcc() {
         const [owner, scHolder, yachtCharterCompany] = await ethers.getSigners();
-        //const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
         const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenization");
         const yachtSquadToken = await YachtSquadTokenisation.deploy(YachtSquadTokenisation);
         return { yachtSquadToken, owner ,scHolder, yachtCharterCompany};
@@ -78,7 +69,6 @@ describe("YachtSquadTokenisation contract", function () {
 
     async function deployContract_SCholderYccnvestor() {
         const [owner, scHolder ,yachtCharterCompany, investor1, investor2, lead1] = await ethers.getSigners();
-        //const initialURI = 'https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/';//to be completed
         const YachtSquadTokenisation = await ethers.getContractFactory("YachtSquadTokenization");
         const yachtSquadToken = await YachtSquadTokenisation.deploy(YachtSquadTokenisation);
         return { yachtSquadToken, owner ,scHolder, yachtCharterCompany, investor1, investor2, lead1};
@@ -152,7 +142,7 @@ describe("YachtSquadTokenisation contract", function () {
             expect(yacht.uri).to.equal(yacht0.uri);
             expect(yacht.legal).to.equal(yacht0.legal);
             expect(yacht.paymentWallet).to.equal(yachtCharterCompany.address);
-            expect(yacht.status).to.equal(yacht0.status);
+            expect(yacht.status).to.equal(status.IntialMint);
         });
 
         it("Should not mint yacht0 correctly", async function() {

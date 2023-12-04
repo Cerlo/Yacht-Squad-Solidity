@@ -68,7 +68,7 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     }
 
     /*
-    ----- Manage token transfert 
+    ----- Manage token transfert à amélioré niveau sécurisation.
     */
     function setYachtSquadTokenisationContract(address _contractAddress) external onlyOwner {
         yachtSquadTokenisationContract = _contractAddress;
