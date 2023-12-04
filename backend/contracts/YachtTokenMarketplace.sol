@@ -40,10 +40,10 @@ contract YachtTokenMarketplace is Ownable {
         address indexed seller
     );
 
-    constructor(address _yachtTokenContract, address _yachtSquadTokenisationContract, address _yachtSquadTokenHolderContract) Ownable(msg.sender){
-        yachtTokenContract = IERC1155(_yachtTokenContract);
-        yachtSquadTokenisationContract = IYachtSquadTokenisation(_yachtSquadTokenisationContract);
-        yachtSquadTokenHolderContract = IYachtSquadTokenHolder(_yachtSquadTokenHolderContract);
+    constructor(address _yachtSquadTokenisationContractAddress, address _yachtSquadTokenHolderContractAddress) Ownable(msg.sender){
+        yachtTokenContract = IERC1155(_yachtSquadTokenisationContractAddress);
+        yachtSquadTokenisationContract = IYachtSquadTokenisation(_yachtSquadTokenisationContractAddress);
+        yachtSquadTokenHolderContract = IYachtSquadTokenHolder(_yachtSquadTokenHolderContractAddress);
     }
 
     // Fonction pour lister un token à vendre
