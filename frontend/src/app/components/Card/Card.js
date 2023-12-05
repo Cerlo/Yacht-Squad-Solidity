@@ -1,9 +1,8 @@
 // src/app/components/Card.js
 
 import React from 'react';
-import { Box, Image, Text, VStack, Heading, Button } from '@chakra-ui/react';
+import { Box, Image, Text, VStack, Heading, Button, Flex } from '@chakra-ui/react';
 import theme from '../../theme/theme';
-import { celo } from 'viem/chains';
 
 const Card = ({ data }) => {
   const ipfsImageUrl = `https://ipfs.io/ipfs/${data.uri}`; 
@@ -40,20 +39,21 @@ const Card = ({ data }) => {
             Wallet de Paiement: {data.paymentWallet}<br />
             Status: {data.status}
         </Text>
-
-        {/* Bouton */}
-        <Button
-          variant='solid'
-          backgroundColor={theme.colors.gold}
-          color={theme.colors.lessDark}
-          _hover={{
-            bg: theme.colors.lessDark,
-            color: theme.colors.gold,
-            border: `1px solid ${theme.colors.gold}`,
-          }}
-        >
-          Acheter {data.name}
-        </Button>
+        <Flex width="100%" justifyContent="center">
+            <Button
+                variant='solid'
+                backgroundColor={theme.colors.gold}
+                borderRadius="0"
+                color={theme.colors.lessDark}
+                _hover={{
+                    bg: theme.colors.lessDark,
+                    color: theme.colors.gold,
+                    border: `1px solid ${theme.colors.gold}`,
+                }}
+            >
+                Acheter {data.name}
+            </Button>
+        </Flex>
       </VStack>
     </Box>
   );
