@@ -5,6 +5,7 @@ require('dotenv').config();
 
 const fs = require('fs');
 const path = require('path');
+const { ethers } = require('hardhat');
 const pinataSDK = require('@pinata/sdk');
 
 // Initialize Pinata SDK with the API credentials
@@ -13,6 +14,10 @@ const pinata = new pinataSDK(process.env.PINATA_KEY, process.env.PINATA_SECRET);
 // Define the path to the assets folder
 const assetsFolderPath = path.join(__dirname, '../assets');
 
+/**
+ * Contract address
+ */
+const yachtSquadTokenizationAddress = process.argv[2];
 // Upload fils to Pinata and return IPFS hash
 async function uploadFile(filePath, options) {
     const readableStreamForFile = fs.createReadStream(filePath);
@@ -22,6 +27,18 @@ async function uploadFile(filePath, options) {
 // JSON upload to Pinata and return IPFS hash
 async function uploadJSON(body, options) {
     return pinata.pinJSONToIPFS(body, options);
+}
+
+async function mintYacht(tokenURI, jsonData) {
+    const [deployer] = await ethers.getSigners();
+    const YachtSquadTokenization = await ethers.getContractFactory("YachtSquadTokenization");
+    const yachtSquadTokenization = YachtSquadTokenization.attach(yachtSquadTokenizationAddress);
+
+    // Replace with your mint function parameters
+    const mintTx = await yachtSquadTokenization.mintyachts(deployer.address, jsonData.mmsi, jsonData.tokenPrice, jsonData.maxSupply, jsonData.name, tokenURI, jsonData.legal, jsonData.paymentWallet);
+    const receipt = await mintTx.wait();
+    //Get the NewMint event
+    console.log(`NewMint has been send on wallet: ${receipt.to}`);
 }
 
 async function uploadAssets() {
@@ -63,6 +80,8 @@ async function uploadAssets() {
                     
                     // Upload JSON file to Pinata
                     const jsonResult = await uploadJSON(jsonData, jsonOptions);
+                    // Mint the yacht with the JSON IPFS URI
+                    await mintYacht(jsonData.uri, jsonData);
                     console.log(`JSON uploaded: ${jsonResult.IpfsHash}`);
                 }
             }
