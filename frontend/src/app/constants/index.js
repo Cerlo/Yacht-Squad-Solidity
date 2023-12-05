@@ -1,7 +1,5 @@
 
 export const yachtTokenizationAddress ="0x5fbdb2315678afecb367f032d93f642f64180aa3";
-export const yachtContractHolderAddress ="0x5fbdb2315678afecb367f032d93f642f64180aa3";
-export const yachtMarketPlaceAddress ="0x5fbdb2315678afecb367f032d93f642f64180aa3";
 export const yachtTokenizationABI = [
     {
       "inputs": [],
@@ -853,6 +851,8 @@ export const yachtTokenizationABI = [
       "type": "function"
     }
   ];
+
+export const yachtContractHolderAddress ="0x5fbdb2315678afecb367f032d93f642f64180aa3";
 export const yachtContractHolderABI =[
     {
       "inputs": [
@@ -1214,6 +1214,8 @@ export const yachtContractHolderABI =[
       "type": "function"
     }
   ];
+
+export const yachtMarketPlaceAddress ="0x5fbdb2315678afecb367f032d93f642f64180aa3";
 export const yachtMarketPlaceABI =[
     {
       "inputs": [
