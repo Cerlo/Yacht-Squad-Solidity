@@ -1,11 +1,28 @@
 // src/app/components/Card.js
 
-import React from 'react';
-import { Box, Image, Text, VStack, Heading, Button, Flex } from '@chakra-ui/react';
+import React, { useState } from 'react';
+import { 
+    Box, 
+    Image, 
+    Text, 
+    VStack, 
+    Heading, 
+    Button, 
+    Flex, 
+    useTheme, 
+    Modal, 
+    ModalOverlay, 
+    ModalContent, 
+    ModalBody, 
+    useDisclosure 
+} from '@chakra-ui/react';
+
 import theme from '../../theme/theme';
 
 const Card = ({ data }) => {
   const ipfsImageUrl = `https://ipfs.io/ipfs/${data.uri}`; 
+  const theme = useTheme();
+  const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
     <Box
@@ -19,13 +36,15 @@ const Card = ({ data }) => {
       width="100%"
       maxW="600px" // Largeur uniforme pour toutes les cartes
     >
-     <Box flex="1">
+     <Box flex="1" cursor="pointer" onClick={onOpen}>
         <Image
           objectFit='cover'
           width="100%"
           height="100%"
           src={ipfsImageUrl}
           alt={data.name}
+          transition="0.3s ease-in-out"
+          _hover={{ transform: "scale(1.05)" }} // Effet de zoom
         />
       </Box>
 
@@ -55,6 +74,14 @@ const Card = ({ data }) => {
             </Button>
         </Flex>
       </VStack>
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+        <ModalOverlay />
+        <ModalContent>
+          <ModalBody>
+            <Image src={ipfsImageUrl} alt={data.name} />
+          </ModalBody>
+        </ModalContent>
+      </Modal>
     </Box>
   );
 };
