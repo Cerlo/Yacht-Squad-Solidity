@@ -19,19 +19,19 @@ describe("YachtSquadTokenHolder contract", function () {
         tokenPrice:2000, 
         maxSupply:100000,
         name: 'Black Pearl',
-        uri: 'cb8480dedb3a9f7fbb1d5707e228d80c119fc57184651bdecfdb1cef9c0dc899', // string : Image du boat
+        uri: 'bafkreiabh7oeweksbqznghhapoc5ekgmsjr64ia3bhors3ws3rzuyybjny', // string : Image du boat
         legal: '07762f76dfdbb1597218313ea27680c28bac238600230cc7a20c7e2cd9de4d73', //Black Pearl is owned by YachtSquad 
         paymentWallet:"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
         status : status.IntialMint
     }
-
+    
     const yacht1= {
         id:1,
         mmsi:319085900, //mmsi/AIS => yacht identification
         tokenPrice:1000, 
         maxSupply:100000,
         name: 'Aquijo',
-        uri:'cb8480dedb3a9f7fbb1d5707e228d80c119fc57184651bdecfdb1cef9c0dc899',
+        uri:'bafkreihcta63ik4fe5cuttvdjx4smtp5acd5qzv4joypeg7nb7ggasxipq',
         legal: 'a899fc0d56ef54e9a2a9e7b8ef16e79f4ca11a56d86d79f6366d14b0c3c690aa', //Aquijo is owned by YachtSquad
         paymentWallet:"0x70997970C51812dc3A010C7d01b50e0d17dc79C8",
         status : status.PreSale

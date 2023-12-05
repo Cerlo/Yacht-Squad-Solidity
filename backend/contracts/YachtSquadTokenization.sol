@@ -75,7 +75,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     Yachts[] yachts;
 
     // penser à utiliser des données indexed pour une meilleure exploitation côté front
-    event NewMint(uint _tokenIds, uint maxSupply, string yachtName);
+    event NewMint(uint indexed _tokenIds, uint indexed maxSupply, string indexed yachtName);
     event RecivedToken(address from, address to, uint _tokenIds, uint amount);
     event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
 
