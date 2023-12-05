@@ -1,5 +1,5 @@
 // src/app/components/Header.js
-'use Client'
+'use client'
 import React, { useState, useEffect } from 'react';
 import { Box, Flex, Text, Button, Link, Image, HStack, Spinner, Spacer  } from '@chakra-ui/react';
 import {

@@ -1,5 +1,4 @@
 'use client'
-
 import { ChakraProvider } from '@chakra-ui/react'
 import '@rainbow-me/rainbowkit/styles.css';
 import {
@@ -28,8 +27,8 @@ const { chains, publicClient } = configureChains(
   ]
 );
 const { connectors } = getDefaultWallets({
-  appName: 'Project3',
-  projectId: '1c6d2e9f223b865b6c54d9698b39e825',
+  appName: 'YachtSquad',
+  projectId: '190c1947c2c770f70c3656d11578831f',
   chains
 });
 const wagmiConfig = createConfig({
@@ -38,7 +37,7 @@ const wagmiConfig = createConfig({
   publicClient
 })
 
-export default function RootLayout({ children, pageProps }) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
@@ -49,7 +48,6 @@ export default function RootLayout({ children, pageProps }) {
             borderRadius: 'none',
             fontStack: 'system',
             overlayBlur: 'small',
-            
           })}>
           <ChakraProvider theme={theme}>
             <Header />

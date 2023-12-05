@@ -3,15 +3,12 @@
 import React from 'react';
 import { Box, Flex, Text, Link, Image, VStack } from '@chakra-ui/react';
 import { FaLinkedin, FaGithub, FaDiscord } from 'react-icons/fa';
+import theme from '../../theme/theme'; 
 
 const Footer = () => {
+    const goldShadow = `0px -8px 30px -5px ${theme.colors.gold}`; // Ombre gold
   return (
     <Box bg="#353530" color="#fff">
-        <VStack 
-        spacing={4} 
-        p={2}>
-            <Text>© 2023 YachtSquad Inc. All rights reserved.</Text>
-        </VStack>
         <Flex
             direction="column"
             align="center"
@@ -24,14 +21,14 @@ const Footer = () => {
                 <Image src="/csv-logo.svg" alt="CSV Logo" boxSize="50px" mr="10px" />
             </Flex>
 
-            <Link href="mailto:contact@realtoken.com" mb={2}>Contact Us</Link>
+            <Link href="mailto:contact@yachtsquad.com" mb={2}>Contact Us</Link>
 
             <Flex>
                 <Link paddingInline={2}href="mailto:contact@realtoken.com">Contact Us</Link>
                 <Link href="https://www.linkedin.com" isExternal mr={2}>
                     <FaLinkedin size="24px" />
                 </Link>
-                <Link href="https://www.github.com" isExternal mr={2}>
+                <Link href="https://github.com/Cerlo/Yacht-Squad-Solidity" isExternal mr={2}>
                     <FaGithub size="24px" />
                 </Link>
                 <Link href="https://www.discord.com" isExternal>
@@ -39,6 +36,12 @@ const Footer = () => {
                 </Link>
             </Flex>
         </Flex>
+        <VStack 
+        spacing={4} 
+        p={2}
+        boxShadow={goldShadow}>
+            <Text>© 2023 YachtSquad Inc. All rights reserved.</Text>
+        </VStack>
     </Box>
   );
 };
