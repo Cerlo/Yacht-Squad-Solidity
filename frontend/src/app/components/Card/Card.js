@@ -32,7 +32,8 @@ const Card = ({ data }) => {
       borderWidth="1px"
       bg={theme.colors.lessDark} // Couleur de fond lessDark
       p={4}
-      mt={4}
+      mt={2}
+      mb={2}
       width="100%"
       maxW="600px" // Largeur uniforme pour toutes les cartes
     >
@@ -50,7 +51,7 @@ const Card = ({ data }) => {
 
       {/* Contenu */}
       <VStack flex="1" align="start" p={4}>
-        <Heading size='md' color={theme.colors.white}>{data.name}</Heading>
+        <Heading size='md' color={theme.colors.gold} as='ins'>{data.name}</Heading>
         <Text py='2' color={theme.colors.white}>
             MMSI: {data.mmsi}<br />
             Prix du Token: {data.tokenPrice}<br />
@@ -70,7 +71,7 @@ const Card = ({ data }) => {
                     border: `1px solid ${theme.colors.gold}`,
                 }}
             >
-                Acheter {data.name}
+                Buy {data.name}
             </Button>
         </Flex>
       </VStack>

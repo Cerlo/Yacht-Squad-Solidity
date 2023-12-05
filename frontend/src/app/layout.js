@@ -19,12 +19,7 @@ import { publicProvider } from 'wagmi/providers/public';
 import theme from './theme/theme';
 
 import Header from './components/Header/Header'
-
-
-
-
-
-
+import Footer from './components/Footer/Footer';
 
 const { chains, publicClient } = configureChains(
   [hardhat],
@@ -43,7 +38,6 @@ const wagmiConfig = createConfig({
   publicClient
 })
 
-
 export default function RootLayout({ children, pageProps }) {
   return (
     <html lang="en">
@@ -60,6 +54,7 @@ export default function RootLayout({ children, pageProps }) {
           <ChakraProvider theme={theme}>
             <Header />
             {children}
+            <Footer />
           </ChakraProvider>
           </RainbowKitProvider>
         </WagmiConfig>
