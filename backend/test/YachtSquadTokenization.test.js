@@ -245,7 +245,7 @@ describe("YachtSquadTokenisation contract", function () {
             _yachtCharterCompany = yachtCharterCompany;
         });
     
-        describe("SafeTransfert one SFT", function () {
+        describe("SafeTransfert for ons SFT", function () {
                 
             it("Should update balances correctly after safeTransferFrom", async function () {
                 const tokenId = 0;
@@ -399,8 +399,6 @@ describe("YachtSquadTokenisation contract", function () {
         describe("URI Tests", function(){
             let yachtSquadTokenization;
             let owner;
-            let _baseURI = "https://chocolate-manual-reindeer-776.mypinata.cloud/ipfs/";
-            let _endURI = "?pinataGatewayToken=eQDJhDlHEYMct0GhVYAIbxxg-rjz-G9Xp9sJmFTK98CltvbF7l0tDZgnzn1SKmFZ";
         
             beforeEach(async function () {
                 const fixture = await loadFixture(deployTokenization_init);
@@ -426,7 +424,7 @@ describe("YachtSquadTokenisation contract", function () {
                 const retrievedURI = await yachtSquadTokenization.uri(0);
         
                 // Check if the retrieved URI matches the test URI
-                expect(retrievedURI).to.equal(`${_baseURI}${yacht0.uri}${_endURI}`);
+                expect(retrievedURI).to.equal(`ipfs://${yacht0.uri}`);
             });
 
             
