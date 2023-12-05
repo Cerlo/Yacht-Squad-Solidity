@@ -1,11 +1,11 @@
 // src/app/components/Header.js
 'use Client'
 import React, { useState, useEffect } from 'react';
-import { Box, Flex, Text, Button, useColorMode, Image, HStack, Spinner  } from '@chakra-ui/react';
+import { Box, Flex, Text, Button, Link, Image, HStack, Spinner, Spacer  } from '@chakra-ui/react';
 import {
   ConnectButton
 } from '@rainbow-me/rainbowkit';
-import theme from '../../theme/theme'; // Ajustez le chemin si nécessaire
+import theme from '../../theme/theme'; 
 
 const Header = () => {
 
@@ -13,31 +13,35 @@ const Header = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const timer = setTimeout(() => setLoading(false), 1000); // Ajustez le délai si nécessaire
+    const timer = setTimeout(() => setLoading(false), 1000); 
     return () => clearTimeout(timer);
   }, []);
 
 
   return (
-    <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="0.5rem" bg="#353530" color="#fff">
-      <Flex align="center" mr={5}>
-        <Image src="/csv-logo.svg" alt="CSV Logo" boxSize="100px" mr="1rem" ml="1rem" />
+    <Flex as="nav" align="center" justify="space-between" wrap="wrap" padding="1.5rem" bg="#353530" color="#fff">
+      
+      <Flex align="center">
+        <Image src="/csv-logo.svg" alt="CSV Logo" boxSize="50px" mr="10px" />
         <Text fontSize="lg" fontWeight="bold" color="#fcd462">
           YachtSquad
         </Text>
       </Flex>
 
-      <Flex align="center">
-        {/* Liens de navigation */}
-        <HStack spacing={4} mr={4}>
-          <Button variant="ghost" _hover={{ bg: "#fcd462", color: "#353530" }}>Lien 1</Button>
-          <Button variant="ghost" _hover={{ bg: "#fcd462", color: "#353530" }}>Lien 2</Button>
-          <Button variant="ghost" _hover={{ bg: "#fcd462", color: "#353530" }}>Lien 3</Button>
-        </HStack>
 
+      <Box flex={1} textAlign="center">
+        <HStack spacing={4} justify="center">
+          
+          <Link href="/" mr="5">Home</Link>
+          <Link href="/about" mr="5">About</Link>
+          <Link href="/contact">Contact</Link>
+        </HStack>
+      </Box>
+      
+      <Flex align="center">
         {loading ? (
         <Button
-          size="md" // Ajustez la taille pour correspondre au ConnectButton
+          size="md" 
           bg={theme.colors.gold}
           color={theme.colors.white}
           _hover={{
