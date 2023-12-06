@@ -17,7 +17,7 @@ const CustomConnectButton = () => {
                   openAccountModal();
                 }
               }}
-              className="px-4 py-2 bg-gold text-white border border-gold hover:bg-dark hover:text-gold"
+              className="px-4 py-2 bg-gold text-lessDark border border-gold hover:bg-dark hover:text-gold"
             >
               {mounted && account && chain ? 'Connected' : 'Connect'}
             </button>
