@@ -1,89 +1,54 @@
 // src/app/components/Card.js
-
+'use client'
 import React, { useState } from 'react';
-import { 
-    Box, 
-    Image, 
-    Text, 
-    VStack, 
-    Heading, 
-    Button, 
-    Flex, 
-    useTheme, 
-    Modal, 
-    ModalOverlay, 
-    ModalContent, 
-    ModalBody, 
-    useDisclosure 
-} from '@chakra-ui/react';
-
-import theme from '../../theme/theme';
 
 const Card = ({ data }) => {
-  const ipfsImageUrl = `https://ipfs.io/ipfs/${data.uri}`; 
-  const theme = useTheme();
-  const { isOpen, onOpen, onClose } = useDisclosure();
+  const ipfsImageUrl = `https://ipfs.io/ipfs/${data.uri}`;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const openModal = () => setIsOpen(true);
+  const closeModal = () => setIsOpen(false);
 
   return (
-    <Box
-      display="flex"
-      flexDirection={{ base: 'column', sm: 'row' }}
-      overflow='hidden'
-      borderWidth="1px"
-      bg={theme.colors.lessDark} // Couleur de fond lessDark
-      p={4}
-      mt={2}
-      mb={2}
-      width="100%"
-      maxW="600px" // Largeur uniforme pour toutes les cartes
-    >
-     <Box flex="1" cursor="pointer" onClick={onOpen}>
-        <Image
-          objectFit='cover'
-          width="100%"
-          height="100%"
+    <div className="card card-bordered bg-lessDark w-full max-w-600px flex flex-row">
+      {/* Image à gauche */}
+      <figure className="flex-1 cursor-pointer" onClick={openModal}>
+        <img
+          className="object-cover w-full h-full"
           src={ipfsImageUrl}
           alt={data.name}
-          transition="0.3s ease-in-out"
-          _hover={{ transform: "scale(1.05)" }} // Effet de zoom
         />
-      </Box>
+      </figure>
 
-      {/* Contenu */}
-      <VStack flex="1" align="start" p={4}>
-        <Heading size='md' color={theme.colors.gold} as='ins'>{data.name}</Heading>
-        <Text py='2' color={theme.colors.white}>
-            MMSI: {data.mmsi}<br />
-            Prix du Token: {data.tokenPrice}<br />
-            Max Supply: {data.maxSupply}<br />
-            Wallet de Paiement: {data.paymentWallet}<br />
-            Status: {data.status}
-        </Text>
-        <Flex width="100%" justifyContent="center">
-            <Button
-                variant='solid'
-                backgroundColor={theme.colors.gold}
-                borderRadius="0"
-                color={theme.colors.lessDark}
-                _hover={{
-                    bg: theme.colors.lessDark,
-                    color: theme.colors.gold,
-                    border: `1px solid ${theme.colors.gold}`,
-                }}
-            >
-                Buy {data.name}
-            </Button>
-        </Flex>
-      </VStack>
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
-        <ModalOverlay />
-        <ModalContent>
-          <ModalBody>
-            <Image src={ipfsImageUrl} alt={data.name} />
-          </ModalBody>
-        </ModalContent>
-      </Modal>
-    </Box>
+      {/* Contenu de la carte à droite */}
+      <div className="card-body flex-1">
+        <h2 className="card-title text-gold">{data.name}</h2>
+        <p>
+          MMSI: {data.mmsi}<br />
+          Prix du Token: {data.tokenPrice}<br />
+          Max Supply: {data.maxSupply}<br />
+          Wallet de Paiement: {data.paymentWallet}<br />
+          Status: {data.status}
+        </p>
+        <div className="card-actions justify-end">
+          <button className="btn btn-primary border-dark bg-gold hover:bg-lessDark hover:text-gold hover:border-gold" onClick={openModal}>
+            Buy {data.name}
+          </button>
+        </div>
+      </div>
+
+      {/* Modal */}
+      {isOpen && (
+        <div className="modal modal-open">
+          <div className="modal-box">
+            <img src={ipfsImageUrl} alt={data.name} />
+            <div className="modal-action">
+              <button onClick={closeModal} className="btn">Close</button>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
   );
 };
 

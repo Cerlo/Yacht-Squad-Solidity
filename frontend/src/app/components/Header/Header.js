@@ -1,7 +1,6 @@
 // src/app/components/Header.js
-
+'use client'
 import React, { useState, useEffect } from 'react';
-import { ConnectButton } from '@rainbow-me/rainbowkit';
 import CustomConnectButton from './CustomConnectButton';
 
 const Header = () => {
