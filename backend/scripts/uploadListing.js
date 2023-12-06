@@ -17,7 +17,7 @@ const assetsFolderPath = path.join(__dirname, '../assets');
 /**
  * Contract address
  */
-const yachtSquadTokenizationAddress = process.argv[2];
+const yachtSquadTokenizationAddress = process.env.YACHTSQUADCONTRACTHOLDERADDRESS;
 // Upload fils to Pinata and return IPFS hash
 async function uploadFile(filePath, options) {
     const readableStreamForFile = fs.createReadStream(filePath);
