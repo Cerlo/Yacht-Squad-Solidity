@@ -11,12 +11,12 @@ const Marketplace = () => {
 
   const getYachts= async()=>{
     try {
-      const [data] = await readContract({
+      const data = await readContract({
         address: yachtTokenizationAddress,
         abi: yachtTokenizationABI,
         functionName: "getYachts"
       })
-      return [data]
+      return data
     } catch (err) {
       console.log(err.message)
       return []
@@ -25,14 +25,14 @@ const Marketplace = () => {
   useEffect(()=>{
     const getEvent = async() =>{
       const yachtData = await getYachts()
-      setYachtData(yachtData)
+        setYachtData(yachtData)
     }
     getEvent()
   }, [])
 
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-4 bg-dark">
       {yachtsData.map((item, index) => (
         <Card key={index} data={item} />
       ))}
