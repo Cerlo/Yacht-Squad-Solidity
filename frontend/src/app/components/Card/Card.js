@@ -43,13 +43,14 @@ const Card = ({ data }) => {
               MMSI: {data.mmsi.toString()}<br />
               Prix du Token: {data.tokenPrice.toString()}<br />
               Max Supply: {data.maxSupply.toString()}<br />
+              Legal status hash : {data.legal}<br />
               Wallet de Paiement: {data.paymentWallet}<br />
               Status: {getStatusText(data.status)}
             </p>
           </div>
           <div className="flex justify-between items-center">
             <p className="text-gold text-lg font-semibold">
-              Prix Total: {formattedTotalPrice} $
+              Total Price {formattedTotalPrice} $
             </p>
             <div className="card-actions">
               <button className="rounded-none btn btn-primary border-dark bg-gold hover:bg-lessDark hover:text-gold hover:border-gold" onClick={openModal}>
