@@ -20,9 +20,9 @@
 ## 🍕 Project explaination :
 
 My project is structured in two main folder : 
-### [`Backend`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend)
+### Backend 🔗 : [`link here`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend)
 
-#### [`smartContracts`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/contracts)
+#### Smart Contracts 🔗 : [`link here`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/contracts)
 
 In our YachtSquad project, we've developed a series of smart contracts to facilitate the tokenization and trading of luxury yachts. Our main contracts include:
 
@@ -32,10 +32,10 @@ In our YachtSquad project, we've developed a series of smart contracts to facili
 
     * YachtTokenMarketplace.sol: This contract creates a dynamic marketplace for yacht tokens. Users can list their tokens for sale, and prospective buyers can purchase them, with the contract handling all aspects of pricing and token transfer.
 
-#### [`unit tests`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/test) : 
+####  🔗 : [`unit tests`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/test) : 
 
 
-#### [`scripts`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/scripts)
+#### Scripts 🔗 : [`link here`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/scripts)
 To streamline our development and interaction with the blockchain, we've crafted specific scripts:
 
     * Deployment Scripts: These automate the deployment process, setting up our contracts on the blockchain with predefined configurations.
