@@ -75,7 +75,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     Yachts[] yachts;
 
     // penser à utiliser des données indexed pour une meilleure exploitation côté front
-    event NewMint(uint indexed _tokenIds, Yachts indexed _yachts, string indexed yachtName);
+    event NewMint(uint indexed _tokenIds, uint indexed maxSupply, string indexed yachtName);
     event RecivedToken(address from, address to, uint _tokenIds, uint amount);
     event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
 
@@ -118,7 +118,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         _tokenBalances[newItemId][_mintWallet] += _maxSupply;
         _setURI(newItemId, _uri);
         _setTokenRoyalty(newItemId, msg.sender, 200); //2%
-        emit NewMint(newItemId, yachts[newItemId] ,yachts[newItemId].name);
+        emit NewMint(newItemId, yachts[newItemId].maxSupply ,yachts[newItemId].name);
     }
 
     // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances

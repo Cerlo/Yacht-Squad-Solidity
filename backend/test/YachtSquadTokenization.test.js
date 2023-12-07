@@ -396,78 +396,77 @@ describe("YachtSquadTokenisation contract", function () {
             });
         }); //end describe SafeTransfert batch of sft
 
-        describe("URI Tests", function(){
-            let yachtSquadTokenization;
-            let owner;
         
-            beforeEach(async function () {
-                const fixture = await loadFixture(deployTokenization_init);
-                yachtSquadTokenization = fixture.yachtSquadToken;
-                owner = fixture.owner;
-            });
-        
-            it("Should correctly set and retrieve token URI", async function() {
-        
-                // Mint a yacht to set its URI
-                await yachtSquadTokenization.connect(owner).mintyachts(
-                    owner.address, 
-                    yacht0.mmsi, 
-                    yacht0.tokenPrice,
-                    yacht0.maxSupply,
-                    yacht0.name, 
-                    yacht0.uri,  
-                    yacht0.legal, 
-                    owner.address
-                );
-        
-                // Retrieve the URI of the minted yacht
-                const retrievedURI = await yachtSquadTokenization.uri(0);
-        
-                // Check if the retrieved URI matches the test URI
-                expect(retrievedURI).to.equal(`ipfs://${yacht0.uri}`);
-            });
+    })
+    describe("URI Tests", function(){
+        let yachtSquadTokenization;
+        let owner;
+    
+        beforeEach(async function () {
+            const fixture = await loadFixture(deployTokenization_init);
+            yachtSquadTokenization = fixture.yachtSquadToken;
+            owner = fixture.owner;
+        });
+    
+        it("Should correctly set and retrieve token URI", async function() {
+    
+            // Mint a yacht to set its URI
+            await yachtSquadTokenization.connect(owner).mintyachts(
+                owner.address, 
+                yacht0.mmsi, 
+                yacht0.tokenPrice,
+                yacht0.maxSupply,
+                yacht0.name, 
+                yacht0.uri,  
+                yacht0.legal, 
+                owner.address
+            );
+    
+            // Retrieve the URI of the minted yacht
+            const retrievedURI = await yachtSquadTokenization.uri(0);
+    
+            // Check if the retrieved URI matches the test URI
+            expect(retrievedURI).to.equal(`ipfs://${yacht0.uri}`);
+        });        
+    });
 
-            
+    describe("Getters", function(){
+        let yachtSquadTokenization;
+        let owner;
+        let investor1;
+
+        beforeEach(async function () {
+            const fixture = await loadFixture(deployContract_SCholderYccnvestor);
+            yachtSquadTokenization = fixture.yachtSquadToken;
+            owner = fixture.owner;
+            investor1 = fixture.investor1;
+
+            // Mint some yachts for folling tests
+            await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht0.mmsi, yacht0.tokenPrice, yacht0.maxSupply, yacht0.name, yacht0.uri, yacht0.legal, owner.address);
+            await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht1.mmsi, yacht1.tokenPrice, yacht1.maxSupply, yacht1.name, yacht1.uri, yacht1.legal, owner.address);
         });
 
-        describe("Getters", function(){
-            let yachtSquadTokenization;
-            let owner;
-            let investor1;
+        it("Should return all yachts", async function() {
+            const yachts = await yachtSquadTokenization.getYachts();
+            expect(yachts.length).to.equal(2);
+            expect(yachts[0].name).to.equal(yacht0.name);
+            expect(yachts[1].name).to.equal(yacht1.name);
+        });
 
-            beforeEach(async function () {
-                const fixture = await loadFixture(deployContract_SCholderYccnvestor);
-                yachtSquadTokenization = fixture.yachtSquadToken;
-                owner = fixture.owner;
-                investor1 = fixture.investor1;
+        it("Should return a specific yacht by ID", async function() {
+            const yacht = await yachtSquadTokenization.getYacht(0);
+            expect(yacht.name).to.equal(yacht0.name);
+        });
 
-                // Mint some yachts for folling tests
-                await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht0.mmsi, yacht0.tokenPrice, yacht0.maxSupply, yacht0.name, yacht0.uri, yacht0.legal, owner.address);
-                await yachtSquadTokenization.connect(owner).mintyachts(owner.address, yacht1.mmsi, yacht1.tokenPrice, yacht1.maxSupply, yacht1.name, yacht1.uri, yacht1.legal, owner.address);
-            });
+        it("Should return yachts owned by an investor", async function() {
+            // Transfer some tokens to investor1
+            await yachtSquadTokenization.connect(owner).safeTransferFrom(owner.address, investor1.address, 0, 100, "0x");
 
-            it("Should return all yachts", async function() {
-                const yachts = await yachtSquadTokenization.getYachts();
-                expect(yachts.length).to.equal(2);
-                expect(yachts[0].name).to.equal(yacht0.name);
-                expect(yachts[1].name).to.equal(yacht1.name);
-            });
-
-            it("Should return a specific yacht by ID", async function() {
-                const yacht = await yachtSquadTokenization.getYacht(0);
-                expect(yacht.name).to.equal(yacht0.name);
-            });
-
-            it("Should return yachts owned by an investor", async function() {
-                // Transfer some tokens to investor1
-                await yachtSquadTokenization.connect(owner).safeTransferFrom(owner.address, investor1.address, 0, 100, "0x");
-
-                const investments = await yachtSquadTokenization.getInvestments(investor1.address);
-                expect(investments.length).to.equal(1);
-                expect(investments[0].name).to.equal(yacht0.name);
-            });
-        }); // end getters
-    })
+            const investments = await yachtSquadTokenization.getInvestments(investor1.address);
+            expect(investments.length).to.equal(1);
+            expect(investments[0].name).to.equal(yacht0.name);
+        });
+    }); // end getters
 
 
 
