@@ -5,11 +5,9 @@ Welcome to the YachtSquad project's testing documentation. This guide will walk 
 ## Prerequisites
 Before running the tests, ensure you have the following installed:
 
-```bash
-    Node.js (version 12 or higher)
-    Yarn or npm
-    Hardhat - Ethereum development environment
-```
+* [`Node.js`](https://nodejs.org/en/) (version 12 or higher)
+* [`Yarn`](https://yarnpkg.com/) or [`npm`](https://www.npmjs.com/) package manager
+* [`Hardhat`](https://hardhat.org/) - Ethereum development environment
 
 ## Installation
     Clone the repository:
@@ -22,9 +20,9 @@ cd your-repository-directory
 ## Install dependencies:
 
 ```bash
-    yarn install
-    # or
-    npm install
+yarn install
+# or
+npm install
 ```
 
 ## Running Tests
