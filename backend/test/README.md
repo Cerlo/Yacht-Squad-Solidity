@@ -10,11 +10,11 @@ Before running the tests, ensure you have the following installed:
 * [`Hardhat`](https://hardhat.org/) - Ethereum development environment
 
 ## Installation
-    Clone the repository:
+Clone the repository:
 
 ```bash
-git clone https://your-repository-url.git
-cd your-repository-directory
+git clone https://github.com/Cerlo/Yacht-Squad-Solidity
+cd backend
 ```
 
 ## Install dependencies:

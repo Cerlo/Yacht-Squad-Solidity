@@ -1,5 +1,27 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
+
+# YachtSquad Frontend
+
+This is the frontend for the YachtSquad platform, a decentralized application (dApp) for yacht tokenization and trading. Built with Next.js, this interface interacts with Ethereum smart contracts to enable users to view, list, and trade yacht tokens in a secure and user-friendly environment.
+Features
+
+* Marketplace: Browse and purchase yacht tokens.
+* Wallet Integration: Connect with various wallets using RainbowKit and Wagmi.
+* Responsive Design: Optimized for a wide range of devices.
+* Real-time Data: Fetches data from Ethereum blockchain.
+
+
+## Installation
+
+1. Clone the repository:
+
+```bash
+git clone https://github.com/Cerlo/Yacht-Squad-Solidity
+cd frontend
+```
+
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 ## Getting Started
 
 First, run the development server:

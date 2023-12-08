@@ -1,4 +1,3 @@
-// src/app/components/Header.js
 'use client'
 import React, { useState, useEffect } from 'react';
 import CustomConnectButton from './CustomConnectButton';

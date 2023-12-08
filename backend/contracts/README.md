@@ -15,11 +15,11 @@ Before you begin, ensure you have the following installed:
 1. Clone the repository:
 
 ```bash
-git clone https://your-repository-url.git
-cd your-repository-directory
+git clone https://github.com/Cerlo/Yacht-Squad-Solidity
+cd backend
 ```
 
-2. Install dependencies:
+1. Install dependencies:
 
 ```bash
 

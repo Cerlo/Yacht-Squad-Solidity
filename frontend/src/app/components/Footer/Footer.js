@@ -1,5 +1,3 @@
-// src/app/components/Footer/Footer.js
-
 import React from 'react';
 import { FaLinkedin, FaGithub, FaDiscord } from 'react-icons/fa';
 
