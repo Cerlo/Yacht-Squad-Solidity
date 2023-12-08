@@ -4,6 +4,7 @@ Welcome to the YachtSquad project's testing documentation. This guide will walk 
 
 ## Prerequisites
 Before running the tests, ensure you have the following installed:
+
 ```bash
     Node.js (version 12 or higher)
     Yarn or npm
@@ -12,12 +13,10 @@ Before running the tests, ensure you have the following installed:
 
 ## Installation
     Clone the repository:
-    bash
 
 ```bash
 git clone https://your-repository-url.git
 cd your-repository-directory
-
 ```
 
 ## Install dependencies:
@@ -26,8 +25,8 @@ cd your-repository-directory
     yarn install
     # or
     npm install
-
 ```
+
 ## Running Tests
 
 To run the test suite, execute the following command in the project root directory:
@@ -35,7 +34,6 @@ To run the test suite, execute the following command in the project root directo
 ```bash
 npx hardhat test
 ```
-
 This command will execute all test files located in the test directory.
 
 ## Test Structure
