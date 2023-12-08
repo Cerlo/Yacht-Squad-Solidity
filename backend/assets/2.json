@@ -1,0 +1,11 @@
+{
+    "id":2,
+    "mmsi":12345, 
+    "tokenPrice":100, 
+    "maxSupply":1000,
+    "name": "DemoYacht",
+    "uri": "", 
+    "legal": "a899fc0d56ef54e9a2a9e7b8ef16e79f4ca11a56d86d79f6366d14b0c3c690aa", 
+    "paymentWallet":"0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266",
+    "status" : 0
+}

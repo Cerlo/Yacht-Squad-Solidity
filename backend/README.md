@@ -9,6 +9,7 @@ npx hardhat node
 npx hardhat run scripts/deploy.js
 ```
 
+
 ## Smart Contracts 🔗 : [`link here`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/backend/contracts)
 
 * YachtSquadTokenization.sol: This contract is at the heart of our tokenization process. It mints new yacht tokens, embedding essential details like MMSI (a unique identifier for maritime vessels), token price, maximum supply, and the designated payment wallet. It adheres to the ERC1155 standard and incorporates royalty information for secondary sales, ensuring a continuous benefit stream for original token creators.

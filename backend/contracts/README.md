@@ -10,6 +10,12 @@ Before you begin, ensure you have the following installed:
 * [`Yarn`](https://yarnpkg.com/) or [`npm`](https://www.npmjs.com/) package manager
 * [`Hardhat`](https://hardhat.org/) - Ethereum development environment
 
+Contract deployed with `0x8702A748754cb24454849787302Cf759eC27D02A`
+* YachtSquadTokenization deployed and verified to: [`0x7A8AfEd95b0eF14FfA602838FD27d5A14921F8DB`](https://sepolia.etherscan.io/address/0x7A8AfEd95b0eF14FfA602838FD27d5A14921F8DB#code)
+* YachtSquadTokenHolder deployed and verified to: [`0xC0626132e04da0a96544d4cF8e2fEF512b6F3829`](https://sepolia.etherscan.io/address/0xC0626132e04da0a96544d4cF8e2fEF512b6F3829#code)
+
+* YachtTokenMarketplace deployed to: [`0x484f124AD1e69F0b8CC904a36eEDFE10ec4ff746`](https://sepolia.etherscan.io/address/0x484f124AD1e69F0b8CC904a36eEDFE10ec4ff746#code)
+
 ## Installation
 
 1. Clone the repository:
