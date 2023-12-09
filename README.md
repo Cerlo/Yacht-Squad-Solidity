@@ -6,8 +6,8 @@
 > The project will be introduce here but you will find more specific.
 
 🔗 Projects links 🔗 
-[`Vercel`](https://github.com/lecascyril)
-[`GitHub`](https://github.com/lecascyril)
+[`Vercel`](https://yachtsquad.vercel.app/)
+[`GitHub`](https://github.com/Cerlo/Yacht-Squad-Solidity)
 [`Loom`](https://www.loom.com/share/2a979b05d6ee4ec3a4da838ce29fa149?sid=a2002993-75c3-4615-9d17-25b5d33e545a)
 
 📅 _Deadline to submit our work 08/12/2023._
