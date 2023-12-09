@@ -17,7 +17,7 @@ const assetsFolderPath = path.join(__dirname, '../assets');
 /**
  * Contract address
  */
-const yachtSquadTokenizationAddress = process.env.YACHTSQUADCONTRACTHOLDERADDRESS;
+const yachtSquadTokenizationAddress = process.env.YACHTSQUADTOKENIZATIONADDRESS;
 // Upload fils to Pinata and return IPFS hash
 async function uploadFile(filePath, options) {
     const readableStreamForFile = fs.createReadStream(filePath);
@@ -31,12 +31,11 @@ async function uploadJSON(body, options) {
 
 async function mintYacht(tokenURI, jsonData) {
     const [deployer] = await ethers.getSigners();
-    console.log(deployer.address)
-    const YachtSquadTokenization = await ethers.getContractFactory("YachtSquadTokenization");
+    const YachtSquadTokenization = await ethers.getContractFactory("YachtSquadTokenization",);
     const yachtSquadTokenization = YachtSquadTokenization.attach(yachtSquadTokenizationAddress);
 
     // Replace with your mint function parameters
-    const mintTx = await yachtSquadTokenization.mintyachts("0xC0626132e04da0a96544d4cF8e2fEF512b6F3829", jsonData.mmsi, jsonData.tokenPrice, jsonData.maxSupply, jsonData.name, tokenURI, jsonData.legal, jsonData.paymentWallet);
+    const mintTx = await yachtSquadTokenization.mintyachts(process.env.YACHTSQUADCONTRACTHOLDERADDRESS, jsonData.mmsi, jsonData.tokenPrice, jsonData.maxSupply, jsonData.name, tokenURI, jsonData.legal, jsonData.paymentWallet);
     const receipt = await mintTx.wait();
     //Get the NewMint event
     console.log(`NewMint has been send on wallet: ${receipt.to}`);
