@@ -5,6 +5,8 @@
 This is the frontend for the YachtSquad platform, a decentralized application (dApp) for yacht tokenization and trading. Built with Next.js, this interface interacts with Ethereum smart contracts to enable users to view, list, and trade yacht tokens in a secure and user-friendly environment.
 Features
 
+You can access on the web app deployed on vercel : [`Vercel`](https://yachtsquad.vercel.app/)
+
 * Marketplace: Browse and purchase yacht tokens.
 * Wallet Integration: Connect with various wallets using RainbowKit and Wagmi.
 * Responsive Design: Optimized for a wide range of devices.

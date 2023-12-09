@@ -8,7 +8,7 @@
 🔗 Projects links 🔗 
 [`Vercel`](https://yachtsquad.vercel.app/)
 [`GitHub`](https://github.com/Cerlo/Yacht-Squad-Solidity)
-[`Loom`](https://www.loom.com/share/2a979b05d6ee4ec3a4da838ce29fa149?sid=a2002993-75c3-4615-9d17-25b5d33e545a)
+[`Loom`](https://www.loom.com/share/bc2f648e38ca478cbe10604c70f283c8)
 
 📅 _Deadline to submit our work 08/12/2023._
 
@@ -57,5 +57,14 @@ My project is structured in two main folder :
 
 ### [`Frontend`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/frontend)
 
+This is the frontend for the YachtSquad platform, a decentralized application (dApp) for yacht tokenization and trading. Built with Next.js, this interface interacts with Ethereum smart contracts to enable users to view, list, and trade yacht tokens in a secure and user-friendly environment.
+Features
+
+You can access on the web app deployed on vercel : [`Vercel`](https://yachtsquad.vercel.app/)
+
+* Marketplace: Browse and purchase yacht tokens.
+* Wallet Integration: Connect with various wallets using RainbowKit and Wagmi.
+* Responsive Design: Optimized for a wide range of devices.
+* Real-time Data: Fetches data from Ethereum blockchain.
 
 
