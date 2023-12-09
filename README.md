@@ -55,7 +55,7 @@ My project is structured in two main folder :
 
 * Interaction Scripts: Designed for post-deployment activities, these scripts facilitate various interactions like token transfers and marketplace transactions, making the management of our token ecosystem efficient and user-friendly. 
 
-### [`Frontend`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/frontend)
+### Front end 🔗 : [`Link Here`](https://github.com/Cerlo/Yacht-Squad-Solidity/tree/main/frontend)
 
 This is the frontend for the YachtSquad platform, a decentralized application (dApp) for yacht tokenization and trading. Built with Next.js, this interface interacts with Ethereum smart contracts to enable users to view, list, and trade yacht tokens in a secure and user-friendly environment.
 Features
