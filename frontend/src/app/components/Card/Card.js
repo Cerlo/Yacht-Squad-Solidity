@@ -25,21 +25,21 @@ const Card = ({ data }) => {
 
   return (
     <div className="flex justify-center items-center my-4">
-      <div className="card card-bordered bg-lessDark w-1/2 max-w-600px flex flex-row rounded-none h-auto md:h-96">
+      <div className="card card-bordered bg-lessDark w-full md:w-1/2 max-w-600px flex flex-col lg:flex-row rounded-none h-auto lg:h-96">
         {/* Image à gauche */}
-        <figure className="flex-1 cursor-pointer transition-transform">
+        <figure className="w-full lg:flex-1 cursor-pointer transition-transform">
           <img
-            className="object-cover w-full h-full hover:scale-105 overflow-hidden duration-300"
+            className="object-cover w-full h-48 lg:h-full hover:scale-105 overflow-hidden duration-300"
             src={ipfsImageUrl}
             alt={data.name}
           />
         </figure>
 
         {/* Contenu de la carte à droite */}
-        <div className="card-body flex-1 flex flex-col justify-between">
+        <div className="card-body flex-1 flex flex-col justify-between break-words p-4">
           <div>
             <h2 className="card-title text-gold">{data.name}</h2>
-            <p>
+            <p >
               MMSI: {data.mmsi.toString()}<br />
               Prix du Token: {data.tokenPrice.toString()}<br />
               Max Supply: {data.maxSupply.toString()}<br />
