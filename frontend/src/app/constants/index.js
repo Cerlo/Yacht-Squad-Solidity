@@ -1,6 +1,6 @@
 
-//export const yachtTokenizationAddress ="0x5FbDB2315678afecb367f032d93F642f64180aa3";
-export const yachtTokenizationAddress ="0x7A8AfEd95b0eF14FfA602838FD27d5A14921F8DB";
+export const yachtTokenizationAddress ="0x5FbDB2315678afecb367f032d93F642f64180aa3";
+//export const yachtTokenizationAddress ="0x7A8AfEd95b0eF14FfA602838FD27d5A14921F8DB";
 export const yachtTokenizationABI =  [
   {
     "inputs": [],
@@ -853,8 +853,8 @@ export const yachtTokenizationABI =  [
   }
 ];
 
-//export const yachtContractHolderAddress ="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
-export const yachtContractHolderAddress ="0xC0626132e04da0a96544d4cF8e2fEF512b6F3829";
+export const yachtContractHolderAddress ="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+//export const yachtContractHolderAddress ="0xC0626132e04da0a96544d4cF8e2fEF512b6F3829";
 export const yachtContractHolderABI =[
   {
     "inputs": [
@@ -1217,8 +1217,8 @@ export const yachtContractHolderABI =[
   }
 ];
 
-//export const yachtMarketPlaceAddress ="0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
-export const yachtMarketPlaceAddress ="0x484f124AD1e69F0b8CC904a36eEDFE10ec4ff746";
+export const yachtMarketPlaceAddress ="0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+//export const yachtMarketPlaceAddress ="0x484f124AD1e69F0b8CC904a36eEDFE10ec4ff746";
 export const yachtMarketPlaceABI =[
   {
     "inputs": [
