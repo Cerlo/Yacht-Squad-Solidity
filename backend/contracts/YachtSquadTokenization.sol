@@ -11,7 +11,7 @@ interface IERC2981Royalties {
 }
 
 /**
-    -Royalties sur la revente fixé à 200/10000 => 2%
+    -Royalties sur la revente fixé à 200/10000 => 2% 
 */
 contract Royalties is IERC2981Royalties, ERC165{
     struct RoyaltyInfo {
@@ -143,6 +143,9 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         uint256[] memory amounts, 
         bytes memory data
     ) public virtual override {
+        require(ids.length <= 100, "Array length exceeds limit");
+        require(ids.length == amounts.length, "IDs and amounts length mismatch");
+
         for (uint256 i = 0; i < ids.length; ++i) {
             _tokenBalances[ids[i]][from] -= amounts[i];
             _tokenBalances[ids[i]][to] += amounts[i];

@@ -60,6 +60,8 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         uint256[] memory _values,
         bytes memory _data
     ) public virtual override returns (bytes4) {
+        require(_ids.length <= 100, "Array length exceeds limit");
+        require(_ids.length == _values.length, "IDs and values length mismatch");
         for (uint256 i = 0; i < _ids.length; ++i) {
             receivedTokens[_ids[i]] = TokenInfo(_values[i], _from);
             emit TokenReceived(_operator, _from, _ids[i], _values[i], _data);
@@ -91,6 +93,8 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         uint256[] calldata amounts
     ) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
+        require(ids.length <= 100, "Array length exceeds limit");
+        require(ids.length == amounts.length, "IDs and amounts length mismatch");
 
         for (uint256 i = 0; i < ids.length; ++i) {
             require(receivedTokens[ids[i]].amount >= amounts[i], "Insufficient token balance for id");
