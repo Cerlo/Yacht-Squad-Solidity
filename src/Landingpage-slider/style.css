@@ -132,7 +132,7 @@
 .penetrte-blur h1{
     font-size: 200px;
     color: #1c1b19;
-    text-shadow: 0 0 5px rgba(240, 173, 6, 1);
+    text-shadow: 0 0 5px rgba(252, 212, 98, 1);
 }
 
 .left-info .content{
@@ -203,7 +203,7 @@
     position: absolute;
     font-size: 65px;
     color: #1c1b19;
-    text-shadow: 0 0 10px rgba(240, 173, 6, 1);
+    text-shadow: 0 0 3px rgba(252, 212, 98, 1);
     transform: translateY(190%);
     margin-left: 1.3rem;
 }
