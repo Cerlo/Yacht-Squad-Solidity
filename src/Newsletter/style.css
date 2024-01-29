@@ -1,0 +1,358 @@
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #111;
+    height: 100vh;
+    overflow: hidden;
+    --orange: #ff7b0a;
+    --pink: #fe3a7d;
+    --gray: #ccc;
+  }
+  body #wrap {
+    position: relative;
+    display: inline-block;
+    height: 70px;
+    font-family: "Lato";
+    width: calc(100% - 400px);
+    max-width: 750px;
+    min-width: 350px;
+  }
+  body #wrap:after {
+    content: '';
+    position: absolute;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/383755/running.png");
+    background-position: 0px 50%;
+    animation: runner 0.5s steps(32, end) infinite;
+    opacity: 0;
+  }
+  body #wrap.plunge {
+    pointer-events: none;
+  }
+  body #wrap.plunge input[type="email"] {
+    color: transparent;
+  }
+  body #wrap.plunge .btnwrap .spark {
+    animation: spark 0.3s ease-in-out 1 forwards;
+  }
+  @keyframes spark {
+    0% {
+      transform: rotate(45deg) scale(0);
+    }
+    50% {
+      transform: rotate(135deg) scale(1);
+    }
+    100% {
+      transform: rotate(45deg) scale(0);
+    }
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(1) {
+    animation-delay: 2.1s;
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(2) {
+    animation-delay: 2.2s;
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(3) {
+    animation-delay: 2.3s;
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(4) {
+    animation-delay: 2.4s;
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(5) {
+    animation-delay: 2.5s;
+  }
+  body #wrap.plunge .btnwrap .spark:nth-of-type(6) {
+    animation-delay: 2.6s;
+  }
+  body #wrap.plunge .btnwrap .blob {
+    left: 20px;
+    animation: puff 0.5s ease-in-out 1 forwards;
+    animation-delay: 1.65s;
+    transform-origin: right;
+  }
+  @keyframes puff {
+    0% {
+      left: 20px;
+      transform: scale(1);
+    }
+    50% {
+      left: calc(100% - 50px);
+      transform: scale(1.15);
+    }
+    100% {
+      left: calc(100% - 50px);
+      transform: scale(0);
+    }
+  }
+  body #wrap.plunge .btnwrap b:after {
+    animation: openclose 2.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) 1 forwards;
+  }
+  @keyframes openclose {
+    0% {
+      transform: rotate(0deg);
+    }
+    10% {
+      transform: rotate(120deg);
+    }
+    75% {
+      transform: rotate(120deg);
+      animation-timing-function: ease-in;
+    }
+    80% {
+      animation-timing-function: ease-in;
+      transform: rotate(0deg);
+    }
+    100% {
+      animation-timing-function: ease-in;
+      transform: rotate(0deg);
+    }
+  }
+  body #wrap.plunge .field {
+    overflow: hidden;
+    z-index: 999;
+  }
+  body #wrap.plunge .field p .word .char {
+    z-index: 2;
+    animation: run 2s ease-in 1 forwards;
+    animation-delay: 0.25s;
+    will-change: transform;
+  }
+  @keyframes run {
+    to {
+      transform: translateX(2000px);
+    }
+  }
+  body #wrap.plunge .field p .word .char:nth-of-type(2n) {
+    animation-duration: 2.25s;
+  }
+  body #wrap.plunge .field p .word .char:nth-of-type(3n) {
+    animation-duration: 2.5s;
+  }
+  body #wrap.plunge .field p .word .char:nth-of-type(4n) {
+    animation-duration: 2.15s;
+  }
+  body #wrap.plunge .field p .word .char:nth-of-type(5n) {
+    animation-duration: 1.9s;
+  }
+  body #wrap.plunge .field p .word .char:after {
+    transition: 0.2s ease-in-out;
+    transform: scale(0.75);
+    z-index: -1;
+  }
+  body #wrap .field {
+    position: absolute;
+    height: 70px;
+    width: calc(100% - 180px);
+    top: 0px;
+    left: 50px;
+    z-index: 9;
+    pointer-events: none;
+    font-size: 20px;
+    font-family: "Lato";
+    line-height: 1.5;
+  }
+  body #wrap .field p {
+    font-family: "Lato";
+    position: relative;
+    display: inline-block;
+  }
+  body #wrap .field p .word .char {
+    display: inline-block;
+    z-index: 2;
+    position: relative;
+    font-family: "Lato";
+    color: transparent;
+    font-weight: 900;
+  }
+  body #wrap .field p .word .char:nth-of-type(2n):after, body #wrap .field p .word .char:nth-of-type(2n):before {
+    animation-delay: -0.35s;
+  }
+  body #wrap .field p .word .char:nth-of-type(2n):after, body #wrap .field p .word .char:nth-of-type(2n):before {
+    animation-delay: -0.15s;
+  }
+  body #wrap .field p .word .char:nth-of-type(3n):after, body #wrap .field p .word .char:nth-of-type(3n):before {
+    animation-delay: -0.5s;
+  }
+  body #wrap .field p .word .char:nth-of-type(4n) {
+    animation-duration: 1.75s;
+  }
+  body #wrap .field p .word .char:nth-of-type(4n):after, body #wrap .field p .word .char:nth-of-type(4n):before {
+    animation-delay: -0.2s;
+  }
+  body #wrap .field p .word .char:nth-of-type(1) {
+    animation-duration: 1.5s;
+  }
+  body #wrap .field p .word .char:nth-of-type(1):after, body #wrap .field p .word .char:nth-of-type(1):before {
+    animation-delay: -0.15s;
+  }
+  body #wrap .field p .word .char:before {
+    content: attr(data-char);
+    color: #000;
+    display: inline-block;
+    font-weight: 900;
+    position: absolute;
+    z-index: 2;
+    animation: bounce 0.25s ease-in-out infinite alternate;
+    transform-origin: bottom;
+  }
+  @keyframes bounce {
+    from {
+      transform: rotate(-13deg) skewX(-10deg);
+    }
+    to {
+      transform: rotate(5deg) skewX(-15deg);
+    }
+  }
+  body #wrap .field p .word .char:after {
+    content: '';
+    position: absolute;
+    z-index: -1;
+    width: 40px;
+    height: 40px;
+    bottom: -13px;
+    left: calc(50% - 20px);
+    transform-origin: top;
+    width: 40px;
+    height: 26px;
+    background: url("https://s3-us-west-2.amazonaws.com/s.cdpn.io/383755/running.png");
+    background-position: 0px 50%;
+    animation: runner 0.75s steps(32, end) infinite;
+    transform: scale(0);
+    transition: 0.5s ease-in-out;
+  }
+  @keyframes runner {
+    from {
+      background-position: 0px 50%;
+    }
+    to {
+      background-position: -1280px 50%;
+    }
+  }
+  body #wrap form {
+    position: relative;
+    height: 70px;
+    width: 100%;
+    display: inline-block;
+    z-index: 2;
+  }
+  body #wrap form input[type="email"] {
+    max-height: 70px;
+    height: 70px;
+    width: calc(100% - 50px);
+    padding: 0 0 0 50px;
+    border-radius: 80px 0 0 80px;
+    box-sizing: border-box;
+    border: none;
+    outline: none;
+    font-size: 16px;
+    font-family: "Lato";
+    font-size: 20px;
+    font-weight: 900;
+  }
+  body #wrap form input[type="email"]::placeholder {
+    color: #ccc;
+    font-weight: 100;
+  }
+  body #wrap form .btnwrap {
+    display: inline-block;
+    width: auto;
+    height: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+  }
+  body #wrap form .btnwrap .spark {
+    position: absolute;
+    width: 15px;
+    height: 3px;
+    background: linear-gradient(to right, var(--pink), var(--orange), var(--pink));
+    top: -25px;
+    border-radius: 100px;
+    right: 10px;
+    transform: rotate(45deg) scale(0);
+  }
+  body #wrap form .btnwrap .spark:nth-of-type(4) {
+    right: -50px;
+    top: 0;
+  }
+  body #wrap form .btnwrap .spark:nth-of-type(3) {
+    right: -50px;
+    top: 30px;
+  }
+  body #wrap form .btnwrap .spark:nth-of-type(2) {
+    right: -10px;
+    top: 105px;
+  }
+  body #wrap form .btnwrap .spark:nth-of-type(5) {
+    right: 20px;
+    top: 120px;
+  }
+  body #wrap form .btnwrap .spark:nth-of-type(6) {
+    right: -20px;
+    top: -15px;
+  }
+  body #wrap form .btnwrap .spark:before {
+    content: '';
+    position: absolute;
+    width: 3px;
+    height: 15px;
+    background: linear-gradient(to bottom, var(--pink), var(--orange), var(--pink));
+    top: calc(50% - 7.5px);
+    left: calc(50% - 1.5px);
+    border-radius: inherit;
+  }
+  body #wrap form .btnwrap .blob {
+    position: absolute;
+    height: 70px;
+    width: 70px;
+    background: linear-gradient(to bottom, var(--orange), var(--orange) 30%, var(--pink) 70%);
+    z-index: -1;
+    border-radius: 100%;
+    left: 20px;
+    transform: scale(1);
+  }
+  body #wrap form .btnwrap b {
+    position: absolute;
+    color: #fff;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: "Lato";
+    letter-spacing: 1px;
+    z-index: 2;
+    font-size: 20px;
+    pointer-events: none;
+  }
+  body #wrap form .btnwrap b:before {
+    content: '';
+    position: absolute;
+    width: calc(100% + 20px);
+    height: 100%;
+    background: linear-gradient(to bottom, var(--orange), var(--pink));
+    z-index: -1;
+    left: 0;
+    border-radius: 0 80px 80px 0;
+  }
+  body #wrap form .btnwrap b:after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 100%;
+    left: -20px;
+    background: linear-gradient(to bottom, var(--orange), var(--pink));
+    border-radius: 0px 0 0 0px;
+    transform-origin: 100% 0%;
+    transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    transition-delay: 1s;
+    top: 0;
+  }
+  body #wrap form input[type="submit"] {
+    height: 70px;
+    border-radius: 80px;
+    padding: 0 30px;
+    border: none;
+    opacity: 0;
+  }
+  
