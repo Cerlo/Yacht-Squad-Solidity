@@ -157,8 +157,8 @@ section h2 {
   font-weight: 900;
   padding: 0.5em 1em;
   color: #1d1e22;
-  background-color: #f4f4f4;
-  mix-blend-mode: screen;
+  background-color: #fcd462;
+  mix-blend-mode:hard-light;
   border-radius: 0.25em;
   pointer-events: none;
   user-select: none;
