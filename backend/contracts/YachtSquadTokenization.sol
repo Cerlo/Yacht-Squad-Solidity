@@ -11,7 +11,8 @@ interface IERC2981Royalties {
 }
 
 /**
-    -Royalties sur la revente fixé à 200/10000 => 2% 
+* @notice Royalties contract aim is to apply fees for each shares transaction.
+*
 */
 contract Royalties is IERC2981Royalties, ERC165{
     struct RoyaltyInfo {
@@ -39,7 +40,10 @@ contract Royalties is IERC2981Royalties, ERC165{
 }   
 
 
-
+/**
+* @notice This smart contract aim's is to mint and mange RWA tokenized
+*
+*/
 contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
 
     uint private _tokenIds;
@@ -89,7 +93,18 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         return super.supportsInterface(interfaceId);
     }
 
-    // doit être minté sur ERC1155Holders
+    /**
+    * @notice Allow Smart contract Owner to mint Yacht
+    * 
+    * @param _mintWallet Account receiver here it will be YachtSquadTokenHolder.sol
+    * @param _mmsi Is the Maritime Mobile Service Identities (the id of the Yacht)
+    * @param _tokenPrice The price for a single token
+    * @param _maxSupply The number of token available
+    * @param _name Yacht Name
+    * @param _uri Uri of the JSON data
+    * @param _legal The hash of the contract
+    * @param _paymentWallet The wallet able to pay rent 
+    **/
     function mintyachts(
         address _mintWallet, 
         uint _mmsi, 
@@ -121,7 +136,15 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         emit NewMint(newItemId, yachts[newItemId].maxSupply ,yachts[newItemId].name);
     }
 
-    // Surcharge de la fonction safeTransferFrom pour mettre à jour _tokenBalances
+    /**
+    * @notice Overriding safeTransferFrom function to update _tokenBalances
+    * 
+    * @param from token older account
+    * @param to token reciver account
+    * @param id NFT id
+    * @param amount Amount of tokens transfered
+    * @param data needed for function signature herited from ERC1155 contract
+    **/
     function safeTransferFrom(
         address from, 
         address to, 
@@ -129,13 +152,24 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         uint256 amount, 
         bytes memory data
     ) public virtual override {
+        require(_tokenBalances[id][from]  >= amount, "Insufficient token balance for id");
         _tokenBalances[id][from] -= amount;
         _tokenBalances[id][to] += amount;
         super.safeTransferFrom(from, to, id, amount, data);
         emit RecivedToken(from, to, id, amount);
     }
 
-    // Surcharge de la fonction safeBatchTransferFrom pour mettre à jour _tokenBalances
+    // 
+    
+    /**
+    * @notice Overriding the safeBatchTransferFrom function to update _tokenBalances
+    * 
+    * @param from token older account
+    * @param to token reciver account
+    * @param ids[] Array of NFT ids
+    * @param amounts[] Array of amount of tokens transfered
+    * @param data needed for function signature herited from ERC1155 contract
+    **/
     function safeBatchTransferFrom(
         address from, 
         address to, 
@@ -147,6 +181,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         require(ids.length == amounts.length, "IDs and amounts length mismatch");
 
         for (uint256 i = 0; i < ids.length; ++i) {
+        require(_tokenBalances[ids[i]][from]  >= amounts[i], "Insufficient token balance for id");
             _tokenBalances[ids[i]][from] -= amounts[i];
             _tokenBalances[ids[i]][to] += amounts[i];
         }
@@ -155,13 +190,23 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     }
 
     /**
-    URI PART
-    */
+    * @notice seting up URI
+    * 
+    * @param tokenId Token ID
+    * @param tokenURI token URI to setup
+    **/
     function _setURI(uint256 tokenId, string memory tokenURI) internal virtual {
         _tokenURIs[tokenId] = tokenURI;
         emit URI(uri(tokenId), tokenId);
     }
 
+    
+    /**
+    * @notice return URI for the token ID
+    * 
+    * @param tokenId Token ID
+    * @return Return URI for the requested tokenID
+    **/
     function uri(uint256 tokenId) public view virtual override returns (string memory) {
         string memory tokenURI = _tokenURIs[tokenId];
         // If token URI is set, concatenate base URI and tokenURI (via string.concat).
@@ -169,19 +214,27 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     }
 
     /**
-    GETERS
-     */
+    * @notice returns Yahcts informations
+    * 
+    **/
     function getYachts() external view returns(Yachts[] memory){
         return yachts;
     }
 
+    /**
+    * @notice returns yacht ID informations
+    * 
+    **/
     function getYacht(uint _id) external view returns(Yachts memory){
         return yachts[_id];
     }
-
-    /*
-    optimisation en frais de gaz à vérifier
-    */
+    
+    /**
+    * @notice Allow Investor to get information on their Yachts
+    * 
+    * @param investor Account address
+    * @return Yacht[] return the array of yacht the acount has invested on
+    **/
     function getInvestments(address investor) external view returns (Yachts[] memory) {
         uint totalYachts = yachts.length;
         uint count = 0;

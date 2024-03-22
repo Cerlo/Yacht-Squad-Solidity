@@ -52,7 +52,10 @@ contract YachtTokenMarketplace is Ownable {
         );
     }
 
-    // Reject any direct Ether transfers to the contract
+    /**
+    *@notice Reject any direct Ether transfers to the contract
+    *
+    */
     receive() external payable {
         revert("Direct Ether transfers not allowed");
     }
@@ -64,57 +67,70 @@ contract YachtTokenMarketplace is Ownable {
         payable(owner()).transfer(amount);
     }
 
-    // Fonction pour lister un token à vendre
+   
+    /**
+    * @notice Add token to the token sale listing
+    *
+    * @param _tokenId The ID of the token being sale
+    * @param _amount The amount of token sale
+    * @param _pricePerToken The unitary price
+    */
     function listTokenForSale(
-        uint256 tokenId,
-        uint256 amount,
-        uint256 pricePerToken
+        uint256 _tokenId,
+        uint256 _amount,
+        uint256 _pricePerToken
     ) external {
         // Vérifier que le vendeur possède les tokens
         require(
-            yachtTokenContract.balanceOf(msg.sender, tokenId) >= amount,
+            yachtTokenContract.balanceOf(msg.sender, _tokenId) >= _amount,
             "Insufficient token balance"
         );
 
         // Créer une offre de vente
-        saleOffers[tokenId] = SaleOffer(
-            tokenId,
-            amount,
-            pricePerToken,
+        saleOffers[_tokenId] = SaleOffer(
+            _tokenId,
+            _amount,
+            _pricePerToken,
             msg.sender
         );
-        emit TokenListedForSale(tokenId, amount, pricePerToken, msg.sender);
+        emit TokenListedForSale(_tokenId, _amount, _pricePerToken, msg.sender);
     }
 
     // Fonction pour acheter un token
-    function buyToken(uint256 tokenId, uint256 amount) external payable {
-        SaleOffer memory offer = saleOffers[tokenId];
-        require(offer.amount >= amount, "Not enough tokens for sale");
+    /**
+    * @notice Function allow investor to buy token from token sale listing
+    *
+    * @param _tokenId The ID of the token being buy
+    * @param _amount Tthe amounts of token the buyer want to buy
+    */
+    function buyToken(uint256 _tokenId, uint256 _amount) external payable {
+        SaleOffer memory offer = saleOffers[_tokenId];
+        require(offer.amount >= _amount, "Not enough tokens for sale");
         require(
-            msg.value == amount * offer.pricePerToken,
+            msg.value == _amount * offer.pricePerToken,
             "Incorrect payment amount"
         );
-        // Mettre à jour l'offre de vente
-        if (offer.amount == amount) {
-            delete saleOffers[tokenId];
+        // Update Sale offer
+        if (offer.amount == _amount) {
+            delete saleOffers[_tokenId];
         } else {
-            saleOffers[tokenId].amount -= amount;
+            saleOffers[_tokenId].amount -= _amount;
         }
         
-        // Transférer les tokens à l'acheteur
+        // Transfer token from seller to buyer
         yachtTokenContract.safeTransferFrom(
             offer.seller,
             msg.sender,
-            tokenId,
-            amount,
+            _tokenId,
+            _amount,
             ""
         );
-        // Transférer les fonds au vendeur
+        // Pay the seller
         payable(offer.seller).transfer(msg.value);
 
 
 
-        emit TokenSale(tokenId, amount, msg.value, msg.sender, offer.seller);
+        emit TokenSale(_tokenId, _amount, msg.value, msg.sender, offer.seller);
     }
 
     //

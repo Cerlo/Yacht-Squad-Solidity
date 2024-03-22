@@ -6,6 +6,8 @@ import "@openzeppelin/contracts/token/ERC1155/utils/ERC1155Holder.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155.sol";
 import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 
+
+
 contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     // Link to maincontract
     IERC1155 public yachtTokenContract; //Référence au contrat ERC1155 des tokens de yacht.
@@ -34,12 +36,16 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         yachtTokenContract = IERC1155(_yachtSquadTokenisationContractAddress);
     }
 
-    /*
-    -
-    ---- Reception des tokens
-    -
-     */
-    // Override de onERC1155Received pour gérer les tokens reçus
+    /**
+    * @notice Override of onERC1155Received to manage received tokens
+    * 
+    * @param _operator The address which initiated the transfer (i.e. msg.sender)
+    * @param _from The address which previously owned the token
+    * @param _id The ID of the token being transferred
+    * @param _value The amount of tokens being transferred
+    * @param _data  Additional data with no specified format
+    * @return `bytes4(keccak256("onERC1155Received(address,address,uint256,uint256,bytes)"))` if transfer is allowed
+    **/
     function onERC1155Received(
         address _operator,
         address _from,
@@ -53,6 +59,16 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     }
 
     // Override de onERC1155BatchReceived pour gérer les tokens reçus en lot
+    /**
+    * @notice Override of onERC1155BatchReceived to manage received batch tokens 
+    * 
+    * @param _operator The address which initiated the batch transfer (i.e. msg.sender)
+    * @param _from The address which previously owned the token
+    * @param _ids An array containing ids of each token being transferred (order and length must match values array)
+    * @param _values An array containing amounts of each token being transferred (order and length must match ids array)
+    * @param _data Additional data with no specified format
+    * @return `bytes4(keccak256("onERC1155BatchReceived(address,address,uint256[],uint256[],bytes)"))` if transfer is allowed
+    */
     function onERC1155BatchReceived(
         address _operator,
         address _from,
@@ -69,39 +85,54 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         return this.onERC1155BatchReceived.selector;
     }
 
-    /*
-    ----- Manage token transfert à amélioré niveau sécurisation.
+
+    /**
+    * @notice 
     */
     function setYachtSquadTokenisationContract(address _contractAddress) external onlyOwner {
         yachtSquadTokenisationContract = _contractAddress;
     }
 
+    /**
+    *@notice Transfert token from this smart contract to the investor adress
+    *
+    * @param _to token reciver account
+    * @param _id The token id
+    * @param _amount Amount of tokens transfered
+    */
     function transferToken(
-        address to, 
-        uint256 id, 
-        uint256 amount
+        address _to, 
+        uint256 _id, 
+        uint256 _amount
     ) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
-        require(receivedTokens[id].amount >= amount, "Insufficient token balance");
-        receivedTokens[id].amount -= amount;
-        yachtTokenContract.safeTransferFrom(address(this), to, id, amount, "");
+        require(receivedTokens[_id].amount >= _amount, "Insufficient token balance");
+        receivedTokens[_id].amount -= _amount;
+        yachtTokenContract.safeTransferFrom(address(this), _to, _id, _amount, "");
     }
 
+    /**
+    *@notice Transfert tokens from this smart contract to the investor adress
+    *
+    * @param _to token reciver account
+    * @param _ids[] The token ids
+    * @param _amounts[] Amount of tokens transfered
+    */
     function transferTokenBatch(
-        address to, 
-        uint256[] calldata ids, 
-        uint256[] calldata amounts
+        address _to, 
+        uint256[] calldata _ids, 
+        uint256[] calldata _amounts
     ) external {
         require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
-        require(ids.length <= 100, "Array length exceeds limit");
-        require(ids.length == amounts.length, "IDs and amounts length mismatch");
+        require(_ids.length <= 100, "Array length exceeds limit");
+        require(_ids.length == _amounts.length, "IDs and amounts length mismatch");
 
-        for (uint256 i = 0; i < ids.length; ++i) {
-            require(receivedTokens[ids[i]].amount >= amounts[i], "Insufficient token balance for id");
-            receivedTokens[ids[i]].amount -= amounts[i];
+        for (uint256 i = 0; i < _ids.length; ++i) {
+            require(receivedTokens[_ids[i]].amount >= _amounts[i], "Insufficient token balance for id");
+            receivedTokens[_ids[i]].amount -= _amounts[i];
         }
 
-        yachtTokenContract.safeBatchTransferFrom(address(this), to, ids, amounts, "");
+        yachtTokenContract.safeBatchTransferFrom(address(this), _to, _ids, _amounts, "");
     }
 
     // Fonction pour récupérer les informations d'un token spécifique
