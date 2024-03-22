@@ -24,11 +24,11 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
 
     // Event pour signaler la réception d'un token
     event TokenReceived(
-        address operator, 
-        address from, 
-        uint256 id, 
-        uint256 value, 
-        bytes data
+        address _operator, 
+        address _from, 
+        uint256 _id, 
+        uint256 _value, 
+        bytes _data
     );
 
     //Add ref to YachtSquadTokenisation
@@ -136,7 +136,7 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     }
 
     // Fonction pour récupérer les informations d'un token spécifique
-    function getTokenInfo(uint256 tokenId) external view returns (TokenInfo memory) {
-        return receivedTokens[tokenId];
+    function getTokenInfo(uint256 _tokenId) external view returns (TokenInfo memory) {
+        return receivedTokens[_tokenId];
     }
 }

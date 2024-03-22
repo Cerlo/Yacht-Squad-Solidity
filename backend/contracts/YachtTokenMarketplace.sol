@@ -26,17 +26,17 @@ contract YachtTokenMarketplace is Ownable {
 
     // Événements pour les actions du marché
     event TokenListedForSale(
-        uint256 indexed tokenId,
-        uint256 amount,
-        uint256 pricePerToken,
-        address indexed seller
+        uint256 indexed _tokenId,
+        uint256 _amount,
+        uint256 _pricePerToken,
+        address indexed _seller
     );
     event TokenSale(
-        uint256 indexed tokenId,
-        uint256 amount,
-        uint256 totalPrice,
-        address indexed buyer,
-        address indexed seller
+        uint256 indexed _tokenId,
+        uint256 _amount,
+        uint256 _totalPrice,
+        address indexed _buyer,
+        address indexed _seller
     );
 
     constructor(
@@ -60,11 +60,16 @@ contract YachtTokenMarketplace is Ownable {
         revert("Direct Ether transfers not allowed");
     }
 
-    function withdrawFunds(uint256 amount) external onlyOwner {
-        require(amount <= address(this).balance, "Amount exceed the available balance !");
+    /**
+    * @notice Allow Owner to Withdrawl funds This function must be safer 
+    *
+    * @param _amount The amount must be withdrawl by the Owner
+    */
+    function withdrawFunds(uint256 _amount) external onlyOwner {
+        require(_amount <= address(this).balance, "Amount exceed the available balance !");
 
         // Transfert des fonds
-        payable(owner()).transfer(amount);
+        payable(owner()).transfer(_amount);
     }
 
    
@@ -133,5 +138,4 @@ contract YachtTokenMarketplace is Ownable {
         emit TokenSale(_tokenId, _amount, msg.value, msg.sender, offer.seller);
     }
 
-    //
 }

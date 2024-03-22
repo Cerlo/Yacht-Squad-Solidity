@@ -79,9 +79,9 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     Yachts[] yachts;
 
     // penser à utiliser des données indexed pour une meilleure exploitation côté front
-    event NewMint(uint indexed _tokenIds, uint indexed maxSupply, string indexed yachtName);
-    event RecivedToken(address from, address to, uint _tokenIds, uint amount);
-    event RecivedTokens(address from, address to, uint[] ids, uint[]amounts);
+    event NewMint(uint indexed _tokenIds, uint indexed _maxSupply, string indexed _yachtName);
+    event RecivedToken(address _from, address _to, uint _tokenIds, uint _amount);
+    event RecivedTokens(address _from, address _to, uint[] _ids, uint[] _amounts);
 
     /*
     * @ERC1155("") => mettre une URI de base pour le projet
@@ -89,8 +89,8 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     constructor() Ownable(msg.sender) ERC1155(""){} 
 
 
-    function supportsInterface(bytes4 interfaceId) public view virtual override(ERC1155, Royalties) returns (bool){
-        return super.supportsInterface(interfaceId);
+    function supportsInterface(bytes4 _interfaceId) public view virtual override(ERC1155, Royalties) returns (bool){
+        return super.supportsInterface(_interfaceId);
     }
 
     /**
@@ -139,24 +139,24 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     /**
     * @notice Overriding safeTransferFrom function to update _tokenBalances
     * 
-    * @param from token older account
-    * @param to token reciver account
-    * @param id NFT id
-    * @param amount Amount of tokens transfered
-    * @param data needed for function signature herited from ERC1155 contract
+    * @param _from token older account
+    * @param _to token reciver account
+    * @param _id NFT id
+    * @param _amount Amount of tokens transfered
+    * @param _data needed for function signature herited from ERC1155 contract
     **/
     function safeTransferFrom(
-        address from, 
-        address to, 
-        uint256 id, 
-        uint256 amount, 
-        bytes memory data
+        address _from, 
+        address _to, 
+        uint256 _id, 
+        uint256 _amount, 
+        bytes memory _data
     ) public virtual override {
-        require(_tokenBalances[id][from]  >= amount, "Insufficient token balance for id");
-        _tokenBalances[id][from] -= amount;
-        _tokenBalances[id][to] += amount;
-        super.safeTransferFrom(from, to, id, amount, data);
-        emit RecivedToken(from, to, id, amount);
+        require(_tokenBalances[_id][_from]  >= _amount, "Insufficient token balance for id");
+        _tokenBalances[_id][_from] -= _amount;
+        _tokenBalances[_id][_to] += _amount;
+        super.safeTransferFrom(_from, _to, _id, _amount, _data);
+        emit RecivedToken(_from, _to, _id, _amount);
     }
 
     // 
@@ -164,58 +164,59 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     /**
     * @notice Overriding the safeBatchTransferFrom function to update _tokenBalances
     * 
-    * @param from token older account
-    * @param to token reciver account
-    * @param ids[] Array of NFT ids
-    * @param amounts[] Array of amount of tokens transfered
-    * @param data needed for function signature herited from ERC1155 contract
+    * @param _from token older account
+    * @param _to token reciver account
+    * @param _ids[] Array of NFT ids
+    * @param _amounts[] Array of amount of tokens transfered
+    * @param _data needed for function signature herited from ERC1155 contract
     **/
     function safeBatchTransferFrom(
-        address from, 
-        address to, 
-        uint256[] memory ids, 
-        uint256[] memory amounts, 
-        bytes memory data
+        address _from, 
+        address _to, 
+        uint256[] memory _ids, 
+        uint256[] memory _amounts, 
+        bytes memory _data
     ) public virtual override {
-        require(ids.length <= 100, "Array length exceeds limit");
-        require(ids.length == amounts.length, "IDs and amounts length mismatch");
+        require(_ids.length <= 100, "Array length exceeds limit");
+        require(_ids.length == _amounts.length, "IDs and amounts length mismatch");
 
-        for (uint256 i = 0; i < ids.length; ++i) {
-        require(_tokenBalances[ids[i]][from]  >= amounts[i], "Insufficient token balance for id");
-            _tokenBalances[ids[i]][from] -= amounts[i];
-            _tokenBalances[ids[i]][to] += amounts[i];
+        for (uint256 i = 0; i < _ids.length; ++i) {
+        require(_tokenBalances[_ids[i]][_from]  >= _amounts[i], "Insufficient token balance for id");
+            _tokenBalances[_ids[i]][_from] -= _amounts[i];
+            _tokenBalances[_ids[i]][_to] += _amounts[i];
         }
-        super.safeBatchTransferFrom(from, to, ids, amounts, data);
-        emit RecivedTokens(from, to, ids, amounts);
+        super.safeBatchTransferFrom(_from, _to, _ids, _amounts, _data);
+        emit RecivedTokens(_from, _to, _ids, _amounts);
     }
 
     /**
     * @notice seting up URI
     * 
-    * @param tokenId Token ID
-    * @param tokenURI token URI to setup
+    * @param _tokenId Token ID
+    * @param _tokenURI token URI to setup
     **/
-    function _setURI(uint256 tokenId, string memory tokenURI) internal virtual {
-        _tokenURIs[tokenId] = tokenURI;
-        emit URI(uri(tokenId), tokenId);
+    function _setURI(uint256 _tokenId, string memory _tokenURI) internal virtual {
+        _tokenURIs[_tokenId] = _tokenURI;
+        emit URI(uri(_tokenId), _tokenId);
     }
 
     
     /**
     * @notice return URI for the token ID
     * 
-    * @param tokenId Token ID
-    * @return Return URI for the requested tokenID
+    * @param _tokenId Token ID
+    * @return return URI for the requested tokenID
     **/
-    function uri(uint256 tokenId) public view virtual override returns (string memory) {
-        string memory tokenURI = _tokenURIs[tokenId];
+    function uri(uint256 _tokenId) public view virtual override returns (string memory) {
+        string memory tokenURI = _tokenURIs[_tokenId];
         // If token URI is set, concatenate base URI and tokenURI (via string.concat).
-        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, tokenURI) : super.uri(tokenId);
+        return bytes(tokenURI).length > 0 ? string.concat(_baseURI, tokenURI) : super.uri(_tokenId);
     }
 
     /**
     * @notice returns Yahcts informations
     * 
+    * @return Yachts[] Return the array of Yachts
     **/
     function getYachts() external view returns(Yachts[] memory){
         return yachts;
@@ -224,6 +225,9 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     /**
     * @notice returns yacht ID informations
     * 
+    * @param _id The yacht id
+    *
+    * @return Yacht Return the Yacht
     **/
     function getYacht(uint _id) external view returns(Yachts memory){
         return yachts[_id];
@@ -232,16 +236,16 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     /**
     * @notice Allow Investor to get information on their Yachts
     * 
-    * @param investor Account address
+    * @param _investor Account address
     * @return Yacht[] return the array of yacht the acount has invested on
     **/
-    function getInvestments(address investor) external view returns (Yachts[] memory) {
+    function getInvestments(address _investor) external view returns (Yachts[] memory) {
         uint totalYachts = yachts.length;
         uint count = 0;
 
         // Première boucle pour compter le nombre de yachts détenus par l'investisseur
         for (uint i = 0; i < totalYachts; i++) {
-            if (_tokenBalances[i][investor] > 0) {
+            if (_tokenBalances[i][_investor] > 0) {
                 count++;
             }
         }
@@ -252,7 +256,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
 
         // Deuxième boucle pour remplir le tableau avec les yachts détenus
         for (uint i = 0; i < totalYachts; i++) {
-            if (_tokenBalances[i][investor] > 0) {
+            if (_tokenBalances[i][_investor] > 0) {
                 ownedYachts[index] = yachts[i];
                 index++;
             }
