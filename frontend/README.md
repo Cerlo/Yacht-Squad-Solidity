@@ -65,10 +65,12 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [x] List Of minted Yacht
 - [X] Wallet connection
-- [ ] Functionality1
-  - [x] Sub-Functionality1
-  - [ ] Sub-Functionality2
-  - [ ] Sub-Functionality3
-  - [ ] Sub-Functionality4
-- [ ] Functionality2
+- [ ] Admin section
+  - [ ] Mint Yacht
+  - [ ] Change Yacht Status
+- [ ] Investor section
+  - [ ] Purchase Minted Yacht
+  - [ ] Acquire Yacht shares from Another Investor
+  - [ ] Sell shares
+  - [ ] View owned yacht
 - [ ] Functionality3
