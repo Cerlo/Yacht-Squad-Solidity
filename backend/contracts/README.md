@@ -111,3 +111,22 @@ Replace localhost with the network name you configured in hardhat.config.js.
 * interfaces/IYachtSquadTokenHolder.sol: Interface for the YachtSquadTokenHolder contract, defining essential functions and events.
 
 * interfaces/IYachtSquadTokenization.sol: Interface for the YachtSquadTokenization contract, outlining the required functionalities for yacht token management.
+
+
+```mermaid
+   flowchart TD
+     A[YachtSquad RWA solution] -->|Token management| B(YachtSquadTokenization.sol)
+     B -->|yes| C[start]
+     B -->|no| D[check]
+     A -->|Manage intial mint| E(YachtSquadTokenHolder.sol)
+     E -->|yes| F[check]
+     E -->|no| G[create & fund]
+     A -->|Marketplace management| H(YachtTokenMarketplace.sol)
+     H -->|yes| I(workspace = true?)
+     I -->|yes| J[build, deploy, init]
+     I -->|no| K[spoon]
+     H -->|no| L[check]
+     J --> M[bind & import]
+     K --> M
+     L --> M
+   ```
