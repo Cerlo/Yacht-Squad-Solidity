@@ -115,13 +115,9 @@ Replace localhost with the network name you configured in hardhat.config.js.
 
 ```mermaid
    flowchart TD
-     A[YachtSquad RWA solution] -->|Token management| B(YachtSquadTokenization.sol)
-     B -->|yes| C[start]
-     B -->|no| D[check]
-     A -->|Manage intial mint| E(YachtSquadTokenHolder.sol)
-     E -->|yes| F[check]
-     E -->|no| G[create & fund]
-     A -->|Marketplace management| H(YachtTokenMarketplace.sol)
+     A[YachtSquad RWA tokenisation solution] -->|Token management| B(YachtSquadTokenization.sol)
+     A -->|Manage intial mint| C(YachtSquadTokenHolder.sol)
+     A -->|Marketplace management| D(YachtTokenMarketplace.sol)
      H -->|yes| I(workspace = true?)
      I -->|yes| J[build, deploy, init]
      I -->|no| K[spoon]
