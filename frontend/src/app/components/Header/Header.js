@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import CustomConnectButton from './CustomConnectButton';
+import { useAuth } from '@/app/context/AuthContext';
 
 const Header = () => {
   const [loading, setLoading] = useState(true);
+  const { userType } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000); 
@@ -30,6 +32,7 @@ const Header = () => {
           <a href="/" className="mx-4 text-white hover:text-gold">Home</a>
           <a href="/about" className="mx-4 text-white hover:text-gold">About</a>
           <a href="/contact" className="mx-4 text-white hover:text-gold">Contact</a>
+          {userType === 'owner' && <a href="/mint" className="mx-4 text-white hover:text-gold">Mint</a>}
         </div>
 
         <div className="flex-1"></div> 

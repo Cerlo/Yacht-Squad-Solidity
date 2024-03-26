@@ -1,29 +1,11 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { ConnectButton } from '@rainbow-me/rainbowkit';
-import { useContractRead, useAccount } from 'wagmi';
-import { yachtTokenizationABI, yachtTokenizationAddress } from '@/app/constants'; // Assurez-vous que ces importations sont correctes
+import { useAuth } from '@/app/context/AuthContext';
 
 const CustomConnectButton = () => {
-  
-  const { address: connectedAddress, isConnected } = useAccount();
-  const [isOwner, setIsOwner] = useState(false);
+  const { userType, isConnected } = useAuth(); // Utilisez le contexte pour obtenir le type d'utilisateur et le statut de connexion
 
-  // Lecture de l'adresse du propriétaire du contrat
-  const { data: ownerAddress } = useContractRead({
-    address: yachtTokenizationAddress,
-    abi: yachtTokenizationABI,
-    functionName: 'owner',
-});
-
-useEffect(() => {
-  if (isConnected && connectedAddress && ownerAddress) {
-    setIsOwner(connectedAddress.toLowerCase() === ownerAddress.toLowerCase());
-  } else {
-    setIsOwner(false);
-  }
-}, [connectedAddress, ownerAddress, isConnected]);
-
-  const formatAddress = (connectedAddress) => connectedAddress ? `${connectedAddress.substring(0, 4)}…${connectedAddress.substring(connectedAddress.length - 4)}` : '';
+  const formatAddress = (address) => address ? `${address.substring(0, 4)}…${address.substring(address.length - 4)}` : '';
 
   return (
     <div className="connect-button-wrapper">
@@ -40,7 +22,7 @@ useEffect(() => {
               }}
               className="px-4 py-2 bg-gold text-lessDark border border-gold hover:bg-dark hover:text-gold"
             >
-            {mounted && account && chain ? `${formatAddress(account.address)}${isOwner ? ' (owner)' : ''}` : 'Connect'}
+              {mounted && account && chain ? `${formatAddress(account.address)}${isConnected && userType === 'owner' ? ' (owner)' : ''}` : 'Connect'}
             </button>
           </div>
         )}

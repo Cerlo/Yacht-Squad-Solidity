@@ -12,6 +12,7 @@ import {
 import { publicProvider } from 'wagmi/providers/public';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
+import { AuthProvider } from './context/AuthContext';
 const { chains, publicClient } = configureChains(
   [hardhat],
   [
@@ -38,9 +39,11 @@ export default function RootLayout({ children }) {
       <body className='bg-dark'>
         <WagmiConfig config={wagmiConfig}>
           <RainbowKitProvider chains={chains}>
-            <Header />
-            {children}
-            <Footer />
+            <AuthProvider>
+              <Header />
+              {children}
+              <Footer />
+            </AuthProvider>
           </RainbowKitProvider>
         </WagmiConfig>
       </body>
