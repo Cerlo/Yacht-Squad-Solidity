@@ -168,13 +168,13 @@ export const yachtTokenizationABI =  [
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "maxSupply",
+        "name": "_maxSupply",
         "type": "uint256"
       },
       {
         "indexed": true,
         "internalType": "string",
-        "name": "yachtName",
+        "name": "_yachtName",
         "type": "string"
       }
     ],
@@ -206,13 +206,13 @@ export const yachtTokenizationABI =  [
       {
         "indexed": false,
         "internalType": "address",
-        "name": "from",
+        "name": "_from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "to",
+        "name": "_to",
         "type": "address"
       },
       {
@@ -224,7 +224,7 @@ export const yachtTokenizationABI =  [
       {
         "indexed": false,
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_amount",
         "type": "uint256"
       }
     ],
@@ -237,25 +237,25 @@ export const yachtTokenizationABI =  [
       {
         "indexed": false,
         "internalType": "address",
-        "name": "from",
+        "name": "_from",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "address",
-        "name": "to",
+        "name": "_to",
         "type": "address"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "ids",
+        "name": "_ids",
         "type": "uint256[]"
       },
       {
         "indexed": false,
         "internalType": "uint256[]",
-        "name": "amounts",
+        "name": "_amounts",
         "type": "uint256[]"
       }
     ],
@@ -407,7 +407,7 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "internalType": "address",
-        "name": "investor",
+        "name": "_investor",
         "type": "address"
       }
     ],
@@ -720,27 +720,27 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "internalType": "address",
-        "name": "from",
+        "name": "_from",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "to",
+        "name": "_to",
         "type": "address"
       },
       {
         "internalType": "uint256[]",
-        "name": "ids",
+        "name": "_ids",
         "type": "uint256[]"
       },
       {
         "internalType": "uint256[]",
-        "name": "amounts",
+        "name": "_amounts",
         "type": "uint256[]"
       },
       {
         "internalType": "bytes",
-        "name": "data",
+        "name": "_data",
         "type": "bytes"
       }
     ],
@@ -753,27 +753,27 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "internalType": "address",
-        "name": "from",
+        "name": "_from",
         "type": "address"
       },
       {
         "internalType": "address",
-        "name": "to",
+        "name": "_to",
         "type": "address"
       },
       {
         "internalType": "uint256",
-        "name": "id",
+        "name": "_id",
         "type": "uint256"
       },
       {
         "internalType": "uint256",
-        "name": "amount",
+        "name": "_amount",
         "type": "uint256"
       },
       {
         "internalType": "bytes",
-        "name": "data",
+        "name": "_data",
         "type": "bytes"
       }
     ],
@@ -804,7 +804,7 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "internalType": "bytes4",
-        "name": "interfaceId",
+        "name": "_interfaceId",
         "type": "bytes4"
       }
     ],
@@ -836,7 +836,7 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "internalType": "uint256",
-        "name": "tokenId",
+        "name": "_tokenId",
         "type": "uint256"
       }
     ],
