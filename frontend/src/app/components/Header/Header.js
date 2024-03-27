@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import CustomConnectButton from './CustomConnectButton';
 import { useAuth } from '@/app/context/AuthContext';
+import Link from 'next/link';
 
 const Header = () => {
   const [loading, setLoading] = useState(true);
@@ -29,12 +30,12 @@ const Header = () => {
         </div>
 
         <div className="flex-2 text-center">
-          <a href="/" className="mx-4 text-white hover:text-gold">Home</a>
-          <a href="/about" className="mx-4 text-white hover:text-gold">About</a>
-          <a href="/contact" className="mx-4 text-white hover:text-gold">Contact</a>
-          {userType === 'owner' && <a href="/mint" className="mx-4 text-white hover:text-gold">Mint</a>}
-          {userType === 'owner' && <a href="/mint" className="mx-4 text-white hover:text-gold">Change status</a>}
-          {userType === 'investor' && <a href="/mint" className="mx-4 text-white hover:text-gold">Dashboard</a>}
+          <Link href="/" className="mx-4 text-white hover:text-gold">Home</Link>
+          <Link href="/about" className="mx-4 text-white hover:text-gold">About</Link>
+          <Link href="/contact" className="mx-4 text-white hover:text-gold">Contact</Link>
+          {userType === 'owner' && <Link href="/mint" className="mx-4 text-white hover:text-gold">Mint Yacht</Link>}
+          {userType === 'owner' && <Link href="/yachtsStatus" className="mx-4 text-white hover:text-gold">Change status</Link>}
+          {userType === 'investor' && <Link href="/dashboard" className="mx-4 text-white hover:text-gold">Dashboard</Link>}
         </div>
 
         <div className="flex-1"></div> 
