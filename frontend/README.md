@@ -65,6 +65,8 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 - [x] List Of minted Yacht
 - [X] Wallet connection
+  - [X] connection
+  - [X] Detect user status (owner|investor)
 - [ ] Admin section
   - [ ] Mint Yacht
   - [ ] Change Yacht Status

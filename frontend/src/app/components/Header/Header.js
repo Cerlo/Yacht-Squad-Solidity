@@ -33,6 +33,8 @@ const Header = () => {
           <a href="/about" className="mx-4 text-white hover:text-gold">About</a>
           <a href="/contact" className="mx-4 text-white hover:text-gold">Contact</a>
           {userType === 'owner' && <a href="/mint" className="mx-4 text-white hover:text-gold">Mint</a>}
+          {userType === 'owner' && <a href="/mint" className="mx-4 text-white hover:text-gold">Change status</a>}
+          {userType === 'investor' && <a href="/mint" className="mx-4 text-white hover:text-gold">Dashboard</a>}
         </div>
 
         <div className="flex-1"></div> 

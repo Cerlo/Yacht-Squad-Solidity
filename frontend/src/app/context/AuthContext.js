@@ -27,9 +27,6 @@ export const AuthProvider = ({ children }) => {
     }
   }, [connectedAddress, ownerAddress, isConnected]);
 
-  const formatAddress = (connectedAddress) => connectedAddress ? `${connectedAddress.substring(0, 4)}…${connectedAddress.substring(connectedAddress.length - 4)}` : '';
-
-
   return (
     <AuthContext.Provider value={{ userType, isConnected }}>
       {children}

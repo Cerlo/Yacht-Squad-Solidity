@@ -8,6 +8,7 @@ const Card = ({ data }) => {
   const openModal = () => setIsOpen(true);
   const closeModal = () => setIsOpen(false);
 
+  const formatAddress = (address) => address ? `${address.substring(0, 4)}…${address.substring(address.length - 4)}` : '';
   // Format price 100 000 instead of 100000
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -44,7 +45,7 @@ const Card = ({ data }) => {
               Prix du Token: {data.tokenPrice.toString()}<br />
               Max Supply: {data.maxSupply.toString()}<br />
               Legal status hash : {data.legal}<br />
-              Wallet de Paiement: {data.paymentWallet}<br />
+              Wallet de Paiement: {formatAddress(data.paymentWallet)}<br />
               Status: {getStatusText(data.status)}
             </p>
           </div>

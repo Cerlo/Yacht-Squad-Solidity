@@ -22,7 +22,7 @@ const CustomConnectButton = () => {
               }}
               className="px-4 py-2 bg-gold text-lessDark border border-gold hover:bg-dark hover:text-gold"
             >
-              {mounted && account && chain ? `${formatAddress(account.address)}${isConnected && userType === 'owner' ? ' (owner)' : ''}` : 'Connect'}
+              {mounted && account && chain ? `${formatAddress(account.address)} (${isConnected && userType === 'owner' ? 'owner' : userType})` : 'Connect'}
             </button>
           </div>
         )}
