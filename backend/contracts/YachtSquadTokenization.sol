@@ -83,8 +83,8 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     event RecivedToken(address _from, address _to, uint _tokenIds, uint _amount);
     event RecivedTokens(address _from, address _to, uint[] _ids, uint[] _amounts);
 
-    /*
-    * @ERC1155("") => mettre une URI de base pour le projet
+    /** 
+    * @dev @ERC1155("") => mettre une URI de base pour le projet
     */
     constructor() Ownable(msg.sender) ERC1155(""){} 
 

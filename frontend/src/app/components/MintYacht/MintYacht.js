@@ -1,7 +1,15 @@
-import React, { useState } from 'react';
+"use client"
+import './style.css';
+import React, { useState, useEffect } from 'react';
+import { useContractEvent, useAccount } from 'wagmi';
+import { yachtTokenizationABI, yachtTokenizationAddress, yachtContractHolderAddress } from '@/app/constants';
 
 const MintYachtForm = () => {
 
+  const { address } = useAccount();
+  const [showToast, setShowToast] = useState(false);
+  const [toastMessage, setToastMessage] = useState('');
+  const [toastClass, setToastClass] = useState('toast-hidden');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -11,9 +19,26 @@ const MintYachtForm = () => {
     legal: '',
     paymentWallet: '',
     imagePreview: null,
-    imageName: '', // Pour stocker le nom de l'image sélectionnée
+    imageName: '',
   });
 
+
+  /**
+   * @notice Manage the closure of the toast
+   * 
+   */
+  const closeToast = () => {
+    setToastClass('toast-hidden');
+    setTimeout(() => {
+      setShowToast(false);
+      setToastMessage('');
+    }, 500); // animation time
+  };
+
+
+  /***
+   * @notice Is about to manage input and desplay the image selected.
+   */
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
@@ -35,6 +60,9 @@ const MintYachtForm = () => {
     }
   };
 
+  /**
+   * @notice Manage to remove imagePreview
+   */
   const handleRemoveImage = () => {
     setFormData((prevState) => ({
       ...prevState,
@@ -43,16 +71,43 @@ const MintYachtForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  /**
+   * @notice Manage the form submit
+   */
+  const handleSubmit = (e) => { //to be edited ton send on contract
     e.preventDefault();
     console.log('Form data to mint:', formData);
-    alert('Yacht data submitted. Implement minting logic here.');
+    setToastMessage(`New yacht minted: ${formData.name}`);
+    setShowToast(true);
+    setToastClass('toast-visible');
   };
+
+
+  useContractEvent({
+    address: yachtTokenizationAddress,
+    abi: yachtTokenizationABI,
+    eventName: 'NewMint',
+    listener(log) {
+      console.log(log)
+    },
+  });
+
+  // Effet pour fermer le toast après 3 secondes
+  useEffect(() => {
+    let timer;
+    if (showToast) {
+      timer = setTimeout(() => {
+        closeToast();
+      }, 3000);
+    }
+    // Fonction de nettoyage pour effacer le timer
+    return () => clearTimeout(timer);
+  }, [showToast]);
 
 
   return (
     <div className="flex justify-center items-center my-4">
-      <div className="card card-bordered bg-lessDark w-full md:w-1/2 max-w-600px flex flex-col md:flex-row rounded-none">
+      <div className="card card-bordered bg-lessDark w-full md:w-1/2 max-w-600px flex flex-col rounded-none">
 
         <div className="md:flex-1 bg-lessDark flex justify-center items-center text-white relative" style={{ minHeight: '200px' }}>
           {formData.imagePreview ? (
@@ -79,19 +134,21 @@ const MintYachtForm = () => {
         <div className="card-body flex-1 p-4">
           <h2 className="card-title text-gold mb-4">Mint New Yacht</h2>
           <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+
             <div className="float-label">
               <input
                 type="text"
                 id="name"
                 name="name"
-                placeholder=" " 
+                placeholder=" "
                 value={formData.name}
                 onChange={handleChange}
                 required
-                className="input input-bordered w-full" 
+                className="input input-bordered w-full"
               />
               <label htmlFor="name" className="text-gold">Yacht Name:</label>
             </div>
+
             <div className="float-label">
               <input
                 type="text"
@@ -106,60 +163,60 @@ const MintYachtForm = () => {
             </div>
 
             <div className="float-label">
-            <input
-              type="number"
-              name="tokenPrice"
-              placeholder=" "
-              value={formData.tokenPrice}
-              onChange={handleChange}
-              required
-              className="input input-bordered w-full"
+              <input
+                type="number"
+                name="tokenPrice"
+                placeholder=" "
+                value={formData.tokenPrice}
+                onChange={handleChange}
+                required
+                className="input input-bordered w-full"
               />
               <label htmlFor="tokenPrice" className="text-gold">Token Price:</label>
             </div>
-            
+
             <div className="float-label">
-            <input
-              type="number"
-              name="maxSupply"
-              placeholder=" "
-              value={formData.maxSupply}
-              onChange={handleChange}
-              required
-              className="input input-bordered w-full"
+              <input
+                type="number"
+                name="maxSupply"
+                placeholder=" "
+                value={formData.maxSupply}
+                onChange={handleChange}
+                required
+                className="input input-bordered w-full"
               />
               <label htmlFor="maxSupply" className="text-gold">Max Supply:</label>
             </div>
-            
+
             <div className="float-label">
-            <input
-              type="text"
-              name="legal"
-              placeholder=" "
-              value={formData.legal}
-              onChange={handleChange}
-              required
-              className="input input-bordered w-full"
+              <input
+                type="text"
+                name="legal"
+                placeholder=" "
+                value={formData.legal}
+                onChange={handleChange}
+                required
+                className="input input-bordered w-full"
               />
               <label htmlFor="legal" className="text-gold">Legal Status Hash:</label>
             </div>
-            
+
             <div className="float-label">
-            <input
-              type="text"
-              name="paymentWallet"
-              placeholder=" "
-              value={formData.paymentWallet}
-              onChange={handleChange}
-              required
-              className="input input-bordered w-full"
+              <input
+                type="text"
+                name="paymentWallet"
+                placeholder=" "
+                value={formData.paymentWallet}
+                onChange={handleChange}
+                required
+                className="input input-bordered w-full"
               />
               <label htmlFor="paymentWallet" className="text-gold">Payment Wallet:</label>
             </div>
 
             <div>
               <label htmlFor="image" className="block mb-2 text-gold">Yacht Image:</label>
-              <div className="flex items-center">
+              <div className="flex flex-row items-center">
                 <input
                   type="file"
                   id="image"
@@ -168,10 +225,10 @@ const MintYachtForm = () => {
                   onChange={handleChange}
                   className="input input-bordered hidden"
                 />
-                <label htmlFor="image" className="btn cursor-pointer bg-gold text-lessDark border border-gold hover:bg-dark hover:text-gold hover:border-gold">Select Image</label>
+                <label htmlFor="image" className="btn cursor-pointer bg-gold text-lessDark border border-gold hover:bg-dark hover:text-gold hover:border-gold my-2 sm:my-0 sm:mr-4">Select Image</label>
                 {formData.imageName && (
-                  <div className="ml-4 text-sm text-gold flex items-center">
-                    {formData.imageName}
+                  <div className="text-sm text-gold flex items-center mt-2 sm:mt-0 w-full overflow-hidden">
+                    <span className="truncate">{formData.imageName}</span>
                     <span onClick={handleRemoveImage} className="ml-2 text-red-500 cursor-pointer" style={{ fontSize: '24px' }}>&#10005;</span>
                   </div>
                 )}
@@ -184,6 +241,14 @@ const MintYachtForm = () => {
           </form>
         </div>
       </div>
+      {showToast && (
+        <div className={`toast toast-top toast-end ${toastClass}`}>
+          <div className="alert alert-success">
+            <span>{toastMessage}</span>
+            <button onClick={closeToast} className="btn-close">&times;</button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
