@@ -1,0 +1,54 @@
+
+/* Style de base pour le label et l'input */
+.float-label {
+    position: relative;
+    margin-bottom: 20px;
+  }
+  
+  .float-label input {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    background-color: #1f2937; /* bg-lessDark */
+    color: #fff; /* Text color */
+    border: none; /* Remove border */
+  }
+  
+  .float-label input:focus {
+    outline: none;
+    border: 2px solid #fbbf24; /* bg-gold for focus */
+  }
+  
+  .float-label label {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    color: #fbbf24; /* Text color gold */
+    transition: all 0.2s ease;
+    background-color: #1f2937; /* bg-lessDark */
+    padding: 0 4px;
+  }
+  
+  /* Animation du label */
+  .float-label input:focus + label,
+  .float-label input:not(:placeholder-shown) + label {
+    top: -11px; /* Adjust the position to fit your design */
+    left: 5px;
+    font-size: 12px;
+    color: #fbbf24; /* Text color gold */
+    background-color: #353530; /* bg-lessDark */
+  }
+  
+  /* Toast visibility */
+.toast-hidden {
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s, visibility 0.5s;
+  }
+  
+  .toast-visible {
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.5s;
+  }
+  
