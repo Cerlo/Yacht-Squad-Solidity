@@ -34,7 +34,7 @@ const Header = () => {
           <Link href="/about" className="mx-4 text-white hover:text-gold">About</Link>
           <Link href="/contact" className="mx-4 text-white hover:text-gold">Contact</Link>
           {userType === 'owner' && <Link href="/mint" className="mx-4 text-white hover:text-gold">Mint Yacht</Link>}
-          {userType === 'owner' && <Link href="/yachtsStatus" className="mx-4 text-white hover:text-gold">Change status</Link>}
+          {userType === 'owner' && <Link href="/yachtsmanagement" className="mx-4 text-white hover:text-gold">Yacht Management</Link>}
           {userType === 'investor' && <Link href="/dashboard" className="mx-4 text-white hover:text-gold">Dashboard</Link>}
         </div>
 

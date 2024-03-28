@@ -9,6 +9,8 @@ const Card = ({ data }) => {
   const closeModal = () => setIsOpen(false);
 
   const formatAddress = (address) => address ? `${address.substring(0, 4)}…${address.substring(address.length - 4)}` : '';
+  
+  const formatdata = (data) => data ? `${data.substring(0, 4)}…${data.substring(data.length - 4)}` : '';
   // Format price 100 000 instead of 100000
   const formatPrice = (price) => {
     return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
@@ -44,7 +46,7 @@ const Card = ({ data }) => {
               MMSI: {data.mmsi.toString()}<br />
               Prix du Token: {data.tokenPrice.toString()}<br />
               Max Supply: {data.maxSupply.toString()}<br />
-              Legal status hash : {data.legal}<br />
+              Legal status hash : {formatdata(data.legal)}<br />
               Wallet de Paiement: {formatAddress(data.paymentWallet)}<br />
               Status: {getStatusText(data.status)}
             </p>
