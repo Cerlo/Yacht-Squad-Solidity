@@ -267,6 +267,31 @@ export const yachtTokenizationABI =  [
     "inputs": [
       {
         "indexed": true,
+        "internalType": "uint256",
+        "name": "_tokenIds",
+        "type": "uint256"
+      },
+      {
+        "indexed": true,
+        "internalType": "enum YachtSquadTokenization.YachtStatus",
+        "name": "_prevYachtStatus",
+        "type": "uint8"
+      },
+      {
+        "indexed": true,
+        "internalType": "enum YachtSquadTokenization.YachtStatus",
+        "name": "_newYachtStatus",
+        "type": "uint8"
+      }
+    ],
+    "name": "StatusChange",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
         "internalType": "address",
         "name": "operator",
         "type": "address"
@@ -796,6 +821,24 @@ export const yachtTokenizationABI =  [
       }
     ],
     "name": "setApprovalForAll",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_tokenId",
+        "type": "uint256"
+      },
+      {
+        "internalType": "uint8",
+        "name": "_newStatu",
+        "type": "uint8"
+      }
+    ],
+    "name": "statusManagement",
     "outputs": [],
     "stateMutability": "nonpayable",
     "type": "function"

@@ -3,13 +3,15 @@ import './style.css';
 import React, { useState, useEffect } from 'react';
 import { useContractEvent, useAccount } from 'wagmi';
 import { yachtTokenizationABI, yachtTokenizationAddress, yachtContractHolderAddress } from '@/app/constants';
+import Toast from '@/app/components/Toast/Toast';
 
 const MintYachtForm = () => {
 
   const { address } = useAccount();
-  const [showToast, setShowToast] = useState(false);
   const [toastMessage, setToastMessage] = useState('');
-  const [toastClass, setToastClass] = useState('toast-hidden');
+  const [showToast, setShowToast] = useState(false);
+  const [toastType, setToastType] = useState('');
+  const [toastTitle, setToastTitle] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -22,18 +24,6 @@ const MintYachtForm = () => {
     imageName: '',
   });
 
-
-  /**
-   * @notice Manage the closure of the toast
-   * 
-   */
-  const closeToast = () => {
-    setToastClass('toast-hidden');
-    setTimeout(() => {
-      setShowToast(false);
-      setToastMessage('');
-    }, 500); // animation time
-  };
 
 
   /***
@@ -76,10 +66,19 @@ const MintYachtForm = () => {
    */
   const handleSubmit = (e) => { //to be edited ton send on contract
     e.preventDefault();
-    console.log('Form data to mint:', formData);
-    setToastMessage(`New yacht minted: ${formData.name}`);
-    setShowToast(true);
-    setToastClass('toast-visible');
+  console.log('Form data to mint:', formData); 
+  setToastMessage(`New yacht minted with id: ${formData.id}`);
+  setToastType('success');
+  setToastTitle(`${formData.name}`);
+  setShowToast(true); 
+  console.log('Showing Toast');
+
+  };
+
+  
+  const handleToastClose = () => {
+    setShowToast(false);
+    setToastMessage('');
   };
 
 
@@ -91,18 +90,6 @@ const MintYachtForm = () => {
       console.log(log)
     },
   });
-
-  // Effet pour fermer le toast après 3 secondes
-  useEffect(() => {
-    let timer;
-    if (showToast) {
-      timer = setTimeout(() => {
-        closeToast();
-      }, 3000);
-    }
-    // Fonction de nettoyage pour effacer le timer
-    return () => clearTimeout(timer);
-  }, [showToast]);
 
 
   return (
@@ -242,12 +229,7 @@ const MintYachtForm = () => {
         </div>
       </div>
       {showToast && (
-        <div className={`toast toast-top toast-end ${toastClass}`}>
-          <div className="alert alert-success">
-            <span>{toastMessage}</span>
-            <button onClick={closeToast} className="btn-close">&times;</button>
-          </div>
-        </div>
+        <Toast type={toastType} title={toastTitle} message={toastMessage}  onClose={handleToastClose} />
       )}
     </div>
   );
