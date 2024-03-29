@@ -1,14 +1,17 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState, useContext } from 'react'
+import { useRouter } from 'next/navigation';
 import YachtsList from '../components/YachtsList/YachtsList'
-import { readContract } from '@wagmi/core';
+import { readContract, prepareWriteContract, writeContract } from '@wagmi/core';
 import { yachtTokenizationABI, yachtTokenizationAddress } from '@/app/constants';
 import Toast from '@/app/components/Toast/Toast';
+import { useAuth } from '@/app/context/AuthContext';
 
 const yachtStatus = () => {
-
-  const [yachtsData, setYachtData] = useState([]);
+  const router = useRouter(); // Use Next.js useRouter hook for redirection
+  const { userType, isConnected } = useAuth();
+  const [yachtsData, setYachtsData] = useState([]);
   const statusOptions = ["Initial Mint", "PreSale", "Public Sale", "Chartered", "Maintenance", "Sold"];
   const [toastMessage, setToastMessage] = useState('');
   const [showToast, setShowToast] = useState(false);
@@ -29,12 +32,43 @@ const yachtStatus = () => {
     }
   }
 
-  const handleSaveStatus = (yachtId, statusId) => {
-    setToastMessage(`Status is now : ${statusOptions[statusId]}`);
-    setToastType('success');
-    setToastTitle(`Yacht id ${yachtId} status :`);
+  const handleSaveStatus = async (yachtId, statusId) => {
+    if (yachtsData[yachtId].status !== statusId) {
+      try {
+        await changeStatus(yachtId, statusId);
+        setToastType('success');
+        setToastTitle(`${yachtsData[yachtId].name}`);
+        setToastMessage(`Status has changed to: ${statusOptions[statusId]}`);
+      } catch (error) {
+        console.error("Failed to update yacht status:", error);
+        setToastType('error');
+        setToastTitle('Error');
+        setToastMessage('Failed to update yacht status.');
+      }
+    } else {
+      setToastType('error');
+      setToastTitle(`Revert`);
+      setToastMessage(`${yachtsData[yachtId].name} status is already: ${statusOptions[statusId]}`);
+    }
     setShowToast(true);
-    console.log('Showing Toast');
+  };
+
+
+  const changeStatus = async (yachtId, statusId) => {
+    try {
+      const { request } = await prepareWriteContract({
+        address: yachtTokenizationAddress,
+        abi: yachtTokenizationABI,
+        functionName: 'statusManagement',
+        args: [yachtId, statusId]
+      });
+      const { hash } = await writeContract(request);
+      const refreshedYachtsData = await getYachts();
+      setYachtsData(refreshedYachtsData);
+    } catch (error) {
+      console.error('Error updating yacht status:', error);
+    }
+
   };
 
   const handleToastClose = () => {
@@ -42,10 +76,21 @@ const yachtStatus = () => {
     setToastMessage('');
   };
 
+
+  useEffect(() => {
+    // Redirect to '/' if the user is not the owner or not connected
+    if (!isConnected || userType !== 'owner') {
+      router.push({
+        pathname: '/',
+        query: { unauthorized: true },
+      });
+    }
+  }, [userType, isConnected, router]);
+
   useEffect(() => {
     const getEvent = async () => {
       const yachtData = await getYachts()
-      setYachtData(yachtData)
+      setYachtsData(yachtData)
     }
     getEvent()
   }, [])
@@ -56,7 +101,7 @@ const yachtStatus = () => {
       {yachtsData.map((yacht, index) => (
         <YachtsList key={index} yachtIndex={yacht.id} yacht={yacht} onSave={handleSaveStatus} />
       ))}
-      
+
       {showToast && (
         <Toast type={toastType} title={toastTitle} message={toastMessage} onClose={handleToastClose} />
       )}

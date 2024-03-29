@@ -82,7 +82,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     event NewMint(uint indexed _tokenIds, uint indexed _maxSupply, string indexed _yachtName);
     event RecivedToken(address _from, address _to, uint _tokenIds, uint _amount);
     event RecivedTokens(address _from, address _to, uint[] _ids, uint[] _amounts);
-    event StatusChange(uint indexed _tokenIds, YachtStatus indexed _prevYachtStatus, YachtStatus indexed _newYachtStatus);
+    event StatusChange(uint indexed _tokenId, YachtStatus indexed _prevYachtStatus, YachtStatus indexed _newYachtStatus);
 
     /** 
     * @dev @ERC1155("") => mettre une URI de base pour le projet
@@ -116,6 +116,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         string memory _legal, 
         address _paymentWallet
     ) public onlyOwner {
+
         uint256 newItemId = _tokenIds;
         _tokenIds += 1 ;
         yachts.push(Yachts(
@@ -144,12 +145,13 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
     * @param _newStatu New status of the given token
     */
     function statusManagement(
-        uint256 _tokenId, uint8 _newStatu
+        uint256 _tokenId, 
+        uint8 _newStatu
     ) public virtual onlyOwner() {
-        require(uint8(yachts[_tokenId].status) == _newStatu,'It is the same status');
+
         YachtStatus _prevYachtStatus = yachts[_tokenId].status;
         yachts[_tokenId].status = YachtStatus(_newStatu);
-        emit StatusChange(_tokenIds, _prevYachtStatus, yachts[_tokenId].status);
+        emit StatusChange(_tokenId, _prevYachtStatus, yachts[_tokenId].status);
     }
     /**
     * @notice Overriding safeTransferFrom function to update _tokenBalances
