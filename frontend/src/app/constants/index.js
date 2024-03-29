@@ -268,7 +268,7 @@ export const yachtTokenizationABI =  [
       {
         "indexed": true,
         "internalType": "uint256",
-        "name": "_tokenIds",
+        "name": "_tokenId",
         "type": "uint256"
       },
       {

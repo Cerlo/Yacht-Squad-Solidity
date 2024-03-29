@@ -5,18 +5,17 @@ import { useRouter } from 'next/navigation';
 import YachtsList from '../components/YachtsList/YachtsList'
 import { readContract, prepareWriteContract, writeContract } from '@wagmi/core';
 import { yachtTokenizationABI, yachtTokenizationAddress } from '@/app/constants';
-import Toast from '@/app/components/Toast/Toast';
+
+import { useToast } from '@/app/context/ToastContext';
 import { useAuth } from '@/app/context/AuthContext';
+
 
 const yachtStatus = () => {
   const router = useRouter(); // Use Next.js useRouter hook for redirection
   const { userType, isConnected } = useAuth();
   const [yachtsData, setYachtsData] = useState([]);
   const statusOptions = ["Initial Mint", "PreSale", "Public Sale", "Chartered", "Maintenance", "Sold"];
-  const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
-  const [toastType, setToastType] = useState('');
-  const [toastTitle, setToastTitle] = useState('');
+  const { showToast, hideToast } = useToast();
 
   const getYachts = async () => {
     try {
@@ -36,21 +35,14 @@ const yachtStatus = () => {
     if (yachtsData[yachtId].status !== statusId) {
       try {
         await changeStatus(yachtId, statusId);
-        setToastType('success');
-        setToastTitle(`${yachtsData[yachtId].name}`);
-        setToastMessage(`Status has changed to: ${statusOptions[statusId]}`);
+        showToast('success', `${yachtsData[yachtId].name}`, `Status has changed to: ${statusOptions[statusId]}`);
       } catch (error) {
         console.error("Failed to update yacht status:", error);
-        setToastType('error');
-        setToastTitle('Error');
-        setToastMessage('Failed to update yacht status.');
+        showToast('error', 'Error', 'Failed to update yacht status.');
       }
     } else {
-      setToastType('error');
-      setToastTitle(`Revert`);
-      setToastMessage(`${yachtsData[yachtId].name} status is already: ${statusOptions[statusId]}`);
+      showToast('error', 'Revert', `${yachtsData[yachtId].name} status is already: ${statusOptions[statusId]}`);
     }
-    setShowToast(true);
   };
 
 
@@ -69,11 +61,6 @@ const yachtStatus = () => {
       console.error('Error updating yacht status:', error);
     }
 
-  };
-
-  const handleToastClose = () => {
-    setShowToast(false);
-    setToastMessage('');
   };
 
 
@@ -98,10 +85,6 @@ const yachtStatus = () => {
       {yachtsData.map((yacht, index) => (
         <YachtsList key={index} yachtIndex={yacht.id} yacht={yacht} onSave={handleSaveStatus} />
       ))}
-
-      {showToast && (
-        <Toast type={toastType} title={toastTitle} message={toastMessage} onClose={handleToastClose} />
-      )}
     </div>
   )
 }

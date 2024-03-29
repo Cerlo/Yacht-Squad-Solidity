@@ -4,12 +4,13 @@ import React, { useState, useEffect } from 'react';
 import { useContractEvent, useAccount } from 'wagmi';
 import { yachtTokenizationABI, yachtTokenizationAddress, yachtContractHolderAddress } from '@/app/constants';
 import Toast from '@/app/components/Toast/Toast';
+import { useToast } from '@/app/context/ToastContext';
 
 const MintYachtForm = () => {
 
   const { address } = useAccount();
+  const { showToast, hideToast } = useToast();
   const [toastMessage, setToastMessage] = useState('');
-  const [showToast, setShowToast] = useState(false);
   const [toastType, setToastType] = useState('');
   const [toastTitle, setToastTitle] = useState('');
 
@@ -67,20 +68,12 @@ const MintYachtForm = () => {
   const handleSubmit = (e) => { //to be edited ton send on contract
     e.preventDefault();
   console.log('Form data to mint:', formData); 
-  setToastMessage(`New yacht minted with id: ${formData.id}`);
-  setToastType('success');
-  setToastTitle(`${formData.name}`);
-  setShowToast(true); 
+  showToast('success', `${formData.name}`, `New yacht minted with id: ${formData.id}`);
   console.log('Showing Toast');
 
   };
-
   
-  const handleToastClose = () => {
-    setShowToast(false);
-    setToastMessage('');
-  };
-
+  
 
   useContractEvent({
     address: yachtTokenizationAddress,
@@ -228,9 +221,6 @@ const MintYachtForm = () => {
           </form>
         </div>
       </div>
-      {showToast && (
-        <Toast type={toastType} title={toastTitle} message={toastMessage}  onClose={handleToastClose} />
-      )}
     </div>
   );
 };
