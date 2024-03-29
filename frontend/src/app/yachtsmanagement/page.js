@@ -80,10 +80,7 @@ const yachtStatus = () => {
   useEffect(() => {
     // Redirect to '/' if the user is not the owner or not connected
     if (!isConnected || userType !== 'owner') {
-      router.push({
-        pathname: '/',
-        query: { unauthorized: true },
-      });
+      router.push('/');
     }
   }, [userType, isConnected, router]);
 
