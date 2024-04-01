@@ -192,6 +192,80 @@ describe("YachtSquadTokenisation contract", function () {
 
     });
 
+    /**
+     * @notice Here is the test of Yacht status management :
+     * 
+     */
+    describe("Yacht status management", function () {
+        let yachtSquadTokenization;
+        let owner;
+    
+        /**
+         * @notice Deploy the contract and get the owner account. Mint a Yacht for testing
+         */
+        beforeEach(async function () {
+            const fixture = await loadFixture(deployTokenization_init);
+            yachtSquadTokenization = fixture.yachtSquadToken;
+            owner = fixture.owner;
+
+            await yachtSquadTokenization.connect(owner).mintyachts(
+                owner.address, 
+                yacht0.mmsi, 
+                yacht0.tokenPrice, 
+                yacht0.maxSupply, 
+                yacht0.name, 
+                yacht0.uri, 
+                yacht0.legal, 
+                owner.address
+            );
+        });
+    
+        /**
+         * @notice  Change the status of the yacht 
+         *          Retrieve the yacht to check its new status
+         *          Verify the status has been updated
+         */
+        it("Should allow the owner to change the yacht's status", async function () {
+            const newYachtStatus = status.PreSale;
+            await yachtSquadTokenization.connect(owner).statusManagement(0, newYachtStatus);
+            const yacht = await yachtSquadTokenization.getYacht(0);
+            expect(yacht.status).to.equal(newYachtStatus);
+        });
+    
+        /**
+         * @notice Attempt to change the yacht's status as a non-owner
+         * 
+         */
+        it("Should not allow non-owners to change the yacht's status", async function () {
+            const [_, nonOwner] = await ethers.getSigners();
+            const newYachtStatus = status.PreSale;
+            await expect(
+                yachtSquadTokenization.connect(nonOwner).statusManagement(0, newYachtStatus)
+            ).to.be.revertedWithCustomError(yachtSquadTokenization, "OwnableUnauthorizedAccount"); 
+        });
+    
+        /**
+         * @notice Expect the transaction to emit an event with the correct arguments
+         */
+        it("Should emit StatusChange event on status update", async function () {
+            const newYachtStatus = status.PreSale;
+            await expect(yachtSquadTokenization.connect(owner).statusManagement(0, newYachtStatus))
+                .to.emit(yachtSquadTokenization, "StatusChange")
+                .withArgs(0, status.IntialMint, newYachtStatus);
+        });
+    
+        /**
+         * @notice Attempt to set the yacht's status to its current value 
+         * @dev require must be introduce int the smart contract : https://remyc.atlassian.net/browse/CHTSQD2-151
+         */
+        it("Should revert if the new status is the same as the current one", async function () {
+            const currentStatus = status.IntialMint; // Assuming this is the initial status after minting
+            await expect(
+                yachtSquadTokenization.connect(owner).statusManagement(0, currentStatus)
+            ).to.be.revertedWith("It is the same status"); 
+        });
+    });
+
     describe("Royalty Info", function() {
         let yachtSquadTokenization;
         let owner;
