@@ -11,10 +11,9 @@ const YachtsListWithCollapse = ({ yacht, yachtIndex,onSave }) => {
         setOpenCollapseIndex(openCollapseIndex === yachtIndex ? null : yachtIndex);
     };
 
+    
     const handleSaveStatus = (yachtId, statusId) => {
         onSave(yachtId, statusId);
-        console.log(`Saving for Yacht ID: ${yachtId}, Status ID: ${statusId}`);
-        // Ajoutez ici votre logique de sauvegarde du statut
     };
 
     return (
