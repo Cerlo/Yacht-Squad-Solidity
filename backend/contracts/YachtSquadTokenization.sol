@@ -148,7 +148,7 @@ contract YachtSquadTokenization is Ownable, ERC1155, Royalties  {
         uint256 _tokenId, 
         uint8 _newStatu
     ) public virtual onlyOwner() {
-
+        require(yachts[_tokenId].status != YachtStatus(_newStatu), "It is the same status");
         YachtStatus _prevYachtStatus = yachts[_tokenId].status;
         yachts[_tokenId].status = YachtStatus(_newStatu);
         emit StatusChange(_tokenId, _prevYachtStatus, yachts[_tokenId].status);
