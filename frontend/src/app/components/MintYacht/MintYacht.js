@@ -68,7 +68,9 @@ const MintYachtForm = () => {
   };
 
   /**
-   * @notice Manage the form submit and the mint
+   * @notice Manage the form submit and the mint 
+   * 
+   * @dev img upload must be done.
    */
   const handleSubmit = async (e) => {
     e.preventDefault();
