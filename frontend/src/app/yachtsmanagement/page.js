@@ -3,7 +3,7 @@
 import React, { useEffect, useState, useContext } from 'react'
 import { useRouter } from 'next/navigation';
 import YachtsList from '../components/YachtsList/YachtsList'
-import { readContract, prepareWriteContract, writeContract, waitForTransaction, watchContractEvent } from '@wagmi/core';
+import { readContract, prepareWriteContract, writeContract, watchContractEvent } from '@wagmi/core';
 import { yachtTokenizationABI, yachtTokenizationAddress } from '@/app/constants';
 
 import { useToast } from '@/app/context/ToastContext';

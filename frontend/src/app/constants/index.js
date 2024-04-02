@@ -172,7 +172,7 @@ export const yachtTokenizationABI =  [
         "type": "uint256"
       },
       {
-        "indexed": true,
+        "indexed": false,
         "internalType": "string",
         "name": "_yachtName",
         "type": "string"

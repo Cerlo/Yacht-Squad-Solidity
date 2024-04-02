@@ -1,18 +1,20 @@
+/**
+ * @title MintYachtForm Component
+ * @dev This component allows users to input yacht details and mint a new yacht NFT.
+ * 
+ */
 "use client"
 import './style.css';
 import React, { useState, useEffect } from 'react';
-import { useContractEvent, useAccount } from 'wagmi';
+import { useAccount } from 'wagmi';
+
+import { prepareWriteContract, writeContract, watchContractEvent } from '@wagmi/core';
 import { yachtTokenizationABI, yachtTokenizationAddress, yachtContractHolderAddress } from '@/app/constants';
-import Toast from '@/app/components/Toast/Toast';
 import { useToast } from '@/app/context/ToastContext';
 
 const MintYachtForm = () => {
 
   const { address } = useAccount();
-  const { showToast, hideToast } = useToast();
-  const [toastMessage, setToastMessage] = useState('');
-  const [toastType, setToastType] = useState('');
-  const [toastTitle, setToastTitle] = useState('');
 
   const [formData, setFormData] = useState({
     name: '',
@@ -24,6 +26,9 @@ const MintYachtForm = () => {
     imagePreview: null,
     imageName: '',
   });
+
+  const [mintTxHash, setMintTxHash] = useState(null);
+  const { showToast } = useToast();
 
 
 
@@ -63,26 +68,57 @@ const MintYachtForm = () => {
   };
 
   /**
-   * @notice Manage the form submit
+   * @notice Manage the form submit and the mint
    */
-  const handleSubmit = (e) => { //to be edited ton send on contract
+  const handleSubmit = async (e) => {
     e.preventDefault();
-  console.log('Form data to mint:', formData); 
-  showToast('success', `${formData.name}`, `New yacht minted with id: ${formData.id}`);
-  console.log('Showing Toast');
-
+    try {
+      const { request } = await prepareWriteContract({
+        address: yachtTokenizationAddress,
+        abi: yachtTokenizationABI,
+        functionName: "mintyachts",
+        args: [
+          yachtContractHolderAddress,
+          formData.mmsi,
+          formData.tokenPrice,
+          formData.maxSupply,
+          formData.name,
+          'ipfs://bafybeidlko2jbq7wifsc743akyg6w7yv5nhtryamfn7z27jjjksollqa7e',
+          formData.legal,
+          '0xa0Ee7A142d267C1f36714E4a8F75612F20a79720'
+        ]
+      });
+      const { hash } = await writeContract(request);
+      setMintTxHash(hash);
+    } catch (error) {
+    }
   };
-  
+
   
 
-  useContractEvent({
-    address: yachtTokenizationAddress,
-    abi: yachtTokenizationABI,
-    eventName: 'NewMint',
-    listener(log) {
-      console.log(log)
-    },
-  });
+  /**
+   * @Notice retrive for minted yacht
+   * 
+   * @dev implement the showToast properly
+   */
+  useEffect(() => {
+    if (mintTxHash) {
+      const unwatch = watchContractEvent({
+        address: yachtTokenizationAddress,
+        abi: yachtTokenizationABI,
+        eventName: 'NewMint',
+      }, (event) => {
+        const { transactionHash } = event[0];
+        if (transactionHash === mintTxHash) {
+          const { _tokenIds, _maxSupply, _yachtName } = event[0].args;
+          console.log(`Minted done with hash : ${event[0].transactionHash}`);
+          showToast('success', `Minted YachtID: ${_tokenIds}`, `${_yachtName} with Supply ${_maxSupply} has been minted with hash : ${event[0].transactionHash} `);
+          setMintTxHash(null);
+        }
+      });
+      return () => unwatch(); // Assurez-vous de désabonner l'événement lors du nettoyage du composant
+    }
+  }, [mintTxHash, showToast]);
 
 
   return (
