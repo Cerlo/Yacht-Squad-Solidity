@@ -1,8 +1,8 @@
 {
     "id":0,
     "mmsi":319085900, 
-    "tokenPrice":1000, 
-    "maxSupply":100000,
+    "tokenPrice":0.1, 
+    "maxSupply":1000000,
     "name": "Aquijo",
     "uri": "", 
     "legal": "a899fc0d56ef54e9a2a9e7b8ef16e79f4ca11a56d86d79f6366d14b0c3c690aa", 
