@@ -2,7 +2,15 @@
 import React, { useState } from 'react';
 import BuyAsset from '@/app/components/BuyAsset/BuyAsset'
 
-
+/**
+ * @title Card Component
+ * @notice This component displays individual yacht details and handles the purchase interaction.
+ * It allows users to view yacht details and initiate a purchase through a modal dialog.
+ * @dev The component converts IPFS links to HTTP for image display and formats various yacht details for presentation.
+ * It conditionally disables the 'Buy' button based on the `isBuyable` prop which is determined by the yacht's status and user's connection state.
+ * @param {Object} data - The yacht data object containing details like name, MMSI, token price, etc.
+ * @param {boolean} isBuyable - Determines if the yacht is currently buyable based on its status and user's connection state.
+ */
 const Card = ({ data , isBuyable}) => {
   const [isOpen, setIsOpen] = useState(false); 
   const statusText = ["Initial Mint", "PreSale", "Public Sale", "Chartered", "Maintenance", "Sold"];

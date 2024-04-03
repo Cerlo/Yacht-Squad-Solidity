@@ -1,8 +1,4 @@
-/**
- * @title MintYachtForm Component
- * @dev This component allows users to input yacht details and mint a new yacht NFT.
- * 
- */
+
 "use client"
 import './style.css';
 import React, { useState, useEffect } from 'react';
@@ -12,6 +8,11 @@ import { prepareWriteContract, writeContract, watchContractEvent } from '@wagmi/
 import { yachtTokenizationABI, yachtTokenizationAddress, yachtContractHolderAddress } from '@/app/constants';
 import { useToast } from '@/app/context/ToastContext';
 
+/**
+ * @title Mint Yacht Form Component
+ * @dev Allows users to input details for minting a new yacht NFT, including yacht name, MMSI, token price, max supply, legal status, payment wallet, and an image.
+ * Users can submit the form to initiate the minting process on the blockchain. The component listens for a minting event and displays a success message upon completion.
+ */
 const MintYachtForm = () => {
 
   const { address } = useAccount();
@@ -32,9 +33,12 @@ const MintYachtForm = () => {
 
 
 
-  /***
-   * @notice Is about to manage input and desplay the image selected.
-   */
+  /**
+   * @notice Handles input changes and updates form data state.
+   * @param e The event triggered by input field changes.
+   * @dev When the 'image' field is updated, it reads the file, converts it to a Data URL, and updates the form data state with the image preview and file name.
+   * For other fields, it simply updates the corresponding value in the form data state.
+ */
   const handleChange = (e) => {
     const { name, value, files } = e.target;
     if (name === 'image') {
@@ -57,8 +61,9 @@ const MintYachtForm = () => {
   };
 
   /**
-   * @notice Manage to remove imagePreview
-   */
+   * @notice Allows the user to remove the selected image.
+   * @dev Sets the imagePreview and imageName in the form data state to null, effectively removing the selected image.
+  */
   const handleRemoveImage = () => {
     setFormData((prevState) => ({
       ...prevState,
@@ -68,10 +73,10 @@ const MintYachtForm = () => {
   };
 
   /**
-   * @notice Manage the form submit and the mint 
-   * 
-   * @dev img upload must be done.
-   */
+   * @notice Submits the yacht minting form and initiates the minting process.
+   * @param e The event triggered by form submission.
+   * @dev Prepares and sends a minting transaction to the blockchain using the form data. On success, it updates the mintTxHash state with the transaction hash.
+  */
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
@@ -98,13 +103,12 @@ const MintYachtForm = () => {
     }
   };
 
-  
+
 
   /**
-   * @Notice retrive for minted yacht
-   * 
-   * @dev implement the showToast properly
-   */
+   * @notice Watches for the minting event and displays a success message upon detection.
+   * @dev Uses the `watchContractEvent` function to listen for the 'NewMint' event from the yacht tokenization contract. Displays a toast message with the minting details on success.
+  */
   useEffect(() => {
     if (mintTxHash) {
       const unwatch = watchContractEvent({
