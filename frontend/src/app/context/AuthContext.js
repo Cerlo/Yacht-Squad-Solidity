@@ -28,7 +28,7 @@ export const AuthProvider = ({ children }) => {
   }, [connectedAddress, ownerAddress, isConnected]);
 
   return (
-    <AuthContext.Provider value={{ userType, isConnected }}>
+    <AuthContext.Provider value={{ userType, isConnected, connectedAddress }}>
       {children}
     </AuthContext.Provider>
   );

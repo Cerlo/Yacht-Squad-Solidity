@@ -93,6 +93,8 @@ const MintYachtForm = () => {
       const { hash } = await writeContract(request);
       setMintTxHash(hash);
     } catch (error) {
+      showToast('Error', `Minted could not be performed`, `${error.message} `);
+
     }
   };
 
@@ -118,7 +120,7 @@ const MintYachtForm = () => {
           setMintTxHash(null);
         }
       });
-      return () => unwatch(); // Assurez-vous de désabonner l'événement lors du nettoyage du composant
+      return () => unwatch();
     }
   }, [mintTxHash, showToast]);
 

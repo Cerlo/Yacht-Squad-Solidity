@@ -2,8 +2,10 @@
 import React, { useState } from 'react';
 import BuyAsset from '@/app/components/BuyAsset/BuyAsset'
 
-const Card = ({ data }) => {
-  const [isOpen, setIsOpen] = useState(false); const statusText = ["Initial Mint", "PreSale", "Public Sale", "Chartered", "Maintenance", "Sold"];
+
+const Card = ({ data , isBuyable}) => {
+  const [isOpen, setIsOpen] = useState(false); 
+  const statusText = ["Initial Mint", "PreSale", "Public Sale", "Chartered", "Maintenance", "Sold"];
   // replace IPFS by HTTP
   const ipfsImageUrl = data.uri.replace('ipfs://', 'https://ipfs.io/ipfs/');
   const openModal = () => setIsOpen(true);
@@ -57,7 +59,7 @@ const Card = ({ data }) => {
               Total Price {formattedTotalPrice} $
             </p>
             <div className="card-actions">
-              <button className="rounded-none btn btn-primary border-dark bg-gold hover:bg-lessDark hover:text-gold hover:border-gold" onClick={openModal}>
+              <button className="rounded-none btn btn-primary border-dark bg-gold hover:bg-lessDark hover:text-gold hover:border-gold" disabled={!isBuyable} onClick={openModal}>
                 Buy {data.name}
               </button>
             </div>
@@ -68,11 +70,8 @@ const Card = ({ data }) => {
         {isOpen && (
           <div className="modal modal-open  border-gold">
             <div className="modal-box bg-dark">
-              <BuyAsset data={data} onClose={closeModal} />
-              {/* manage modal size*/}
-              <div className="modal-action">
-                <button onClick={closeModal} className="rounded-none btn btn-primary border-dark bg-gold hover:bg-lessDark hover:text-gold hover:border-gold">Close</button>
-              </div>
+              <BuyAsset data={data} onClose={closeModal}  />
+              
             </div>
           </div>
         )}

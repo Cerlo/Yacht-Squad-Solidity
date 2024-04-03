@@ -23,7 +23,7 @@ const ManageStatus = ({ yachtId, currentStatus, onSave }) => {
           </span>
         ))}
       </div>
-      <button className="btn btn-outline btn-success" onClick={() => onSave(yachtId,selectedStatus)}
+      <button className="btn btn-outline btn-success rounded-none" onClick={() => onSave(yachtId,selectedStatus)}
       >        Save Status
       </button>
       
