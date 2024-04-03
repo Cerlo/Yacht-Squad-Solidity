@@ -118,20 +118,19 @@ Replace localhost with the network name you configured in hardhat.config.js.
     UserA[("User A\n(Owner)")]-.->|deploys|YachtTokenization
     UserB[("User B\n(Investor)")]-.->|interacts|YachtTokenization
     UserC[("User C\n(Buyer)")]-.->|buys tokens|YachtMarketPlace
+    UserC[("User C\n(Buyer)")]-.->|interacts|YachtTokenization
     YachtTokenization-.->|deploys|YachtSquadTokenHolder
     YachtTokenization-.->|deploys|YachtMarketPlace
-    YachtTokenization-->"Mint Yacht"-->YachtSquadTokenHolder
+    YachtTokenization-->|"Mint Yacht"|YachtSquadTokenHolder
     YachtSquadTokenHolder-.->|holds tokens|YachtTokenization
-    YachtSquadTokenHolder-->"Transfer Tokens"-->UserB
-    YachtTokenization-->"List on Market"-->YachtMarketPlace
+    YachtSquadTokenHolder-->|"Transfer Tokens"|UserB
     YachtMarketPlace-.->|lists tokens|YachtTokenization
-    YachtMarketPlace-->"Sell Tokens"-->UserC
+    YachtMarketPlace-->|"Sell Tokens"|UserC
 
-    classDef user fill:#f9f,stroke:#333,stroke-width:2px;
-    classDef contract fill:#bbf,stroke:#333,stroke-width:2px;
+    classDef user fill:#265,stroke:#333,stroke-width:2px;
+    classDef contract fill:#025,stroke:#333,stroke-width:2px;
     class UserA,UserB,UserC user;
     class YachtTokenization,YachtSquadTokenHolder,YachtMarketPlace contract;
-
-   ```
+```
 
   
