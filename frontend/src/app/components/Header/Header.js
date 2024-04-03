@@ -5,7 +5,7 @@ import Link from 'next/link';
 
 const Header = () => {
   const [loading, setLoading] = useState(true);
-  const { userType } = useAuth();
+  const { userType, isConnected } = useAuth();
 
   useEffect(() => {
     const timer = setTimeout(() => setLoading(false), 1000); 
@@ -35,7 +35,7 @@ const Header = () => {
           <Link href="/contact" className="mx-4 text-white hover:text-gold">Contact</Link>
           {userType === 'owner' && <Link href="/mint" className="mx-4 text-white hover:text-gold">Mint Yacht</Link>}
           {userType === 'owner' && <Link href="/yachtsmanagement" className="mx-4 text-white hover:text-gold">Yacht Management</Link>}
-          {userType === 'investor' && <Link href="/dashboard" className="mx-4 text-white hover:text-gold">Dashboard</Link>}
+          {isConnected && <Link href="/dashboard" className="mx-4 text-white hover:text-gold">Dashboard</Link>}
         </div>
 
         <div className="flex-1"></div> 

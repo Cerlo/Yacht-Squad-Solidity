@@ -1,10 +1,13 @@
 'use client'
 import React, { useEffect, useState } from 'react';
+import { redirect } from 'next/navigation'
+
 import { useAccount } from 'wagmi';
 import { readContract } from '@wagmi/core';
 
 import Card from '@/app/components/Card/Card';
 import { yachtTokenizationABI, yachtTokenizationAddress } from '@/app/constants';
+import { useAuth } from '@/app/context/AuthContext';
 
 
 /**
@@ -17,7 +20,17 @@ const dashboard = () => {
   const { address, isConnected } = useAccount();
   const [yachts, setYachts] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [loading, setLoading] = useState(false);
+
+  
+    /**
+   * @notice Redirects non-owners or disconnected users to the home page.
+   */ 
+    useEffect(() => {
+      // Redirect to '/' if the user is not the owner or not connected
+      if (!isConnected ) {
+        redirect('/')
+      }
+    }, [isConnected]);
 
    /**
    * @notice Fetches yacht data associated with the connected user's address.
@@ -25,7 +38,7 @@ const dashboard = () => {
    * Handles loading state and potential errors.
    */
   const fetchYachts = async () => {
-    setLoading(true);
+    setIsLoading(true);
     try {
       const yachtData = await readContract({
         address: yachtTokenizationAddress,

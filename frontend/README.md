@@ -74,4 +74,4 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - [X] Purchase Minted Yacht
   - [ ] Acquire Yacht shares from Another Investor
   - [ ] Sell shares
-  - [ ] View owned yacht
+  - [X] View owned yacht
