@@ -61,7 +61,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 
 
 
-## Front-end Functionality
+## Front-end Functionalities
 
 - [x] List Of minted Yacht
 - [X] Wallet connection
