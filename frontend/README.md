@@ -75,4 +75,3 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
   - [ ] Acquire Yacht shares from Another Investor
   - [ ] Sell shares
   - [ ] View owned yacht
-- [ ] Functionality3

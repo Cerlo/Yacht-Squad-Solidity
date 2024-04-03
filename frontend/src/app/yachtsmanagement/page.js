@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState, useContext } from 'react'
+import React, { useEffect, useState, useContext } from 'react';
 import { useRouter } from 'next/navigation';
 import YachtsList from '../components/YachtsList/YachtsList'
 import { readContract, prepareWriteContract, writeContract, watchContractEvent } from '@wagmi/core';
