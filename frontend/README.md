@@ -67,11 +67,11 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/deploym
 - [X] Wallet connection
   - [X] connection
   - [X] Detect user status (owner|investor)
-- [ ] Admin section
-  - [ ] Mint Yacht
-  - [ ] Change Yacht Status
+- [X] Admin section
+  - [X] Mint Yacht
+  - [X] Change Yacht Status
 - [ ] Investor section
-  - [ ] Purchase Minted Yacht
+  - [X] Purchase Minted Yacht
   - [ ] Acquire Yacht shares from Another Investor
   - [ ] Sell shares
   - [ ] View owned yacht
