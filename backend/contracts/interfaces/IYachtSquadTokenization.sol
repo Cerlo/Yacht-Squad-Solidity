@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-interface IYachtSquadTokenisation {
+interface IYachtSquadTokenization {
     // Structure pour les yachts
     struct Yachts {
         uint id;

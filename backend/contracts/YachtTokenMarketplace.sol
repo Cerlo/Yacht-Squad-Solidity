@@ -10,7 +10,7 @@ import "./interfaces/IYachtSquadTokenHolder.sol";
 contract YachtTokenMarketplace is Ownable {
     IERC1155 public yachtTokenContract;
 
-    IYachtSquadTokenisation public yachtSquadTokenisationContract;
+    IYachtSquadTokenization public yachtSquadTokenizationContract;
     IYachtSquadTokenHolder public yachtSquadTokenHolderContract;
 
     // Structure pour une offre de vente
@@ -40,12 +40,12 @@ contract YachtTokenMarketplace is Ownable {
     );
 
     constructor(
-        address _yachtSquadTokenisationContractAddress,
+        address _yachtSquadTokenizationContractAddress,
         address _yachtSquadTokenHolderContractAddress
     ) Ownable(msg.sender) {
-        yachtTokenContract = IERC1155(_yachtSquadTokenisationContractAddress);
-        yachtSquadTokenisationContract = IYachtSquadTokenisation(
-            _yachtSquadTokenisationContractAddress
+        yachtTokenContract = IERC1155(_yachtSquadTokenizationContractAddress);
+        yachtSquadTokenizationContract = IYachtSquadTokenization(
+            _yachtSquadTokenizationContractAddress
         );
         yachtSquadTokenHolderContract = IYachtSquadTokenHolder(
             _yachtSquadTokenHolderContractAddress

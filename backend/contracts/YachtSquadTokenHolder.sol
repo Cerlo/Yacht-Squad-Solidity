@@ -11,7 +11,7 @@ import "@openzeppelin/contracts/token/ERC1155/IERC1155Receiver.sol";
 contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     // Link to maincontract
     IERC1155 public yachtTokenContract; //Référence au contrat ERC1155 des tokens de yacht.
-    address public yachtSquadTokenisationContract;
+    address public yachtSquadTokenizationContract;
 
     // Structure pour stocker les informations sur les tokens reçus
     struct TokenInfo {
@@ -31,9 +31,11 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         bytes _data
     );
 
-    //Add ref to YachtSquadTokenisation
-    constructor(address _yachtSquadTokenisationContractAddress) Ownable(msg.sender) {
-        yachtTokenContract = IERC1155(_yachtSquadTokenisationContractAddress);
+    //Add ref to YachtSquadTokenization
+    constructor(address _yachtSquadTokenizationContractAddress) Ownable(msg.sender) {
+        yachtTokenContract = IERC1155(_yachtSquadTokenizationContractAddress);
+        yachtSquadTokenizationContract = _yachtSquadTokenizationContractAddress;
+        
     }
 
     /**
@@ -89,13 +91,14 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     /**
     * @notice 
     */
-    function setYachtSquadTokenisationContract(address _contractAddress) external onlyOwner {
-        yachtSquadTokenisationContract = _contractAddress;
+    function setYachtSquadTokenizationContract(address _contractAddress) external onlyOwner {
+        yachtSquadTokenizationContract = _contractAddress;
     }
 
     /**
     *@notice Transfert token from this smart contract to the investor adress
     *
+    * @dev : require uprice*amount <= value payable
     * @param _to token reciver account
     * @param _id The token id
     * @param _amount Amount of tokens transfered
@@ -105,7 +108,6 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         uint256 _id, 
         uint256 _amount
     ) external {
-        require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
         require(receivedTokens[_id].amount >= _amount, "Insufficient token balance");
         receivedTokens[_id].amount -= _amount;
         yachtTokenContract.safeTransferFrom(address(this), _to, _id, _amount, "");
@@ -114,6 +116,7 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
     /**
     *@notice Transfert tokens from this smart contract to the investor adress
     *
+    * @dev : require uprice*amount <= value payable
     * @param _to token reciver account
     * @param _ids[] The token ids
     * @param _amounts[] Amount of tokens transfered
@@ -123,7 +126,7 @@ contract YachtSquadTokenHolder is ERC1155Holder, Ownable {
         uint256[] calldata _ids, 
         uint256[] calldata _amounts
     ) external {
-        require(msg.sender == yachtSquadTokenisationContract, "Caller is not authorized");
+        require(msg.sender == yachtSquadTokenizationContract, "Caller is not authorized");
         require(_ids.length <= 100, "Array length exceeds limit");
         require(_ids.length == _amounts.length, "IDs and amounts length mismatch");
 

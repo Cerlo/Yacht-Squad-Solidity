@@ -8,8 +8,8 @@ interface IYachtSquadTokenHolder {
         address sender;
     }
 
-    // Fonction pour définir le contrat YachtSquadTokenisation
-    function setYachtSquadTokenisationContract(address _contractAddress) external;
+    // Fonction pour définir le contrat YachtSquadTokenization
+    function setYachtSquadTokenizationContract(address _contractAddress) external;
 
     // Fonction pour transférer un token
     function transferToken(
