@@ -3,10 +3,9 @@
 import './style.css';
 import React, { useState, useEffect } from 'react';
 
-const Toast = ({ type, title, message, onClose }) => {
+const Toast = ({ type, title, message, toastTimer = 5000, onClose }) => {
     
   const [toastClass, setToastClass] = useState('');
-  const [toastTimer, setToastTimer] = useState(3000);
 
   const backgroundClass = type === 'success' ? 'bg-green-100' : 'bg-red-100';
   const textColor = type === 'success' ? 'text-green-800' : 'text-red-800';
