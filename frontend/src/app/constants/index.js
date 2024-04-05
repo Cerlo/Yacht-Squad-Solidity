@@ -1,5 +1,6 @@
 
-export const yachtTokenizationAddress ="0x5FbDB2315678afecb367f032d93F642f64180aa3";
+//export const yachtTokenizationAddress ="0x5FbDB2315678afecb367f032d93F642f64180aa3";
+export const yachtTokenizationAddress ="0x60Ee1BD28345E1De96A64557666923F2a20b2988";
 export const yachtTokenizationABI =  [
   {
     "inputs": [],
@@ -895,7 +896,8 @@ export const yachtTokenizationABI =  [
   }
 ];
 
-export const yachtContractHolderAddress ="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+//export const yachtContractHolderAddress ="0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512";
+export const yachtContractHolderAddress ="0x5ff55575CA1BAbD0c0688cAd330BC29D2589181e";
 export const yachtContractHolderABI =[
   {
     "inputs": [
@@ -1320,7 +1322,8 @@ export const yachtContractHolderABI =[
   }
 ];
 
-export const yachtMarketPlaceAddress ="0x9fE46736679d2D9a65F0992F2272dE9f3c7fa6e0";
+//export const yachtMarketPlaceAddress ="0x9c3f028e77760A09c5f41b570e865AAE091179fA";
+export const yachtMarketPlaceAddress ="0x484f124AD1e69F0b8CC904a36eEDFE10ec4ff746";
 export const yachtMarketPlaceABI =[
   {
     "inputs": [
