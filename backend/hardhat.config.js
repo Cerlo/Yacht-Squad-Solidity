@@ -30,6 +30,9 @@ module.exports = {
   etherscan: {
     apiKey: ETHERSCAN_API_KEY,
   },
+  sourcify: {
+    enabled: true
+  },
   // /!\ 
   // Configure les compilateurs Solidity utilisés par Hardhat. 
   // Dans cet exemple, la version "0.8.19" est spécifiée.

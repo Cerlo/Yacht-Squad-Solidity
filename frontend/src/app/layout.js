@@ -6,14 +6,14 @@ import {
   RainbowKitProvider,
 } from '@rainbow-me/rainbowkit';
 import { configureChains, createConfig, WagmiConfig } from 'wagmi';
-import { hardhat } from 'wagmi/chains';
+import { sepolia } from 'wagmi/chains';
 import { publicProvider } from 'wagmi/providers/public';
 import Header from './components/Header/Header';
 import Footer from './components/Footer/Footer';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
 const { chains, publicClient } = configureChains(
-  [hardhat],
+  [sepolia],
   [
     publicProvider()
   ]
