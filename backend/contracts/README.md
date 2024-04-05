@@ -132,5 +132,31 @@ Replace localhost with the network name you configured in hardhat.config.js.
     class UserA,UserB,UserC user;
     class YachtTokenization,YachtSquadTokenHolder,YachtMarketPlace contract;
 ```
+```mermaid
+classDiagram
+    class YachtTokenization {
+      +deployToken()
+      +mintYacht()
+      +transferOwnership()
+    }
+    class YachtSquadTokenHolder {
+      +receiveToken()
+      +transferToken()
+    }
+    class YachtMarketPlace {
+      +listToken()
+      +buyToken()
+      +sellToken()
+    }
+    class User {
+      +address
+      +balance
+    }
 
+    YachtTokenization "1" --> "1..*" YachtSquadTokenHolder : deploys
+    YachtTokenization "1" --> "1..*" YachtMarketPlace : lists tokens
+    YachtSquadTokenHolder "1..*" --> "1..*" User : transfers tokens
+    YachtMarketPlace "1..*" --> "1..*" User : buys/sells tokens
+
+```
   
