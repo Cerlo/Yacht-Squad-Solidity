@@ -59,7 +59,7 @@ describe("YachtTokenMarketrplace contract", function () {
             const { yachtTokenMarketplace, yachtSquadTokenization, yachtSquadTokenHolder, owner } = await loadFixture(deployContracts);
 
             // Check if the YachtSquadTokenization contract address is set correctly
-            expect(await yachtTokenMarketplace.yachtSquadTokenisationContract()).to.equal(yachtSquadTokenization.target);
+            expect(await yachtTokenMarketplace.yachtSquadTokenizationContract()).to.equal(yachtSquadTokenization.target);
 
             // Check if the YachtSquadTokenHolder contract address is set correctly
             expect(await yachtTokenMarketplace.yachtSquadTokenHolderContract()).to.equal(yachtSquadTokenHolder.target);

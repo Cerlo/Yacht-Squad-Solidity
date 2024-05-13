@@ -94,7 +94,7 @@ describe("YachtSquadTokenHolder contract", function () {
                 yachtCharterCompany.address
             );
                 // Set the YachtSquadTokenization contract as the authorized caller in YachtSquadTokenHolder
-            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenisationContract(investor.address);
+            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenizationContract(investor.address);
 
             // Transfer tokens from the holder to an investor
             await yachtSquadTokenHolder.connect(investor).transferTokenBatch( investor.address, tokenIds, amounts);
@@ -138,7 +138,7 @@ describe("YachtSquadTokenHolder contract", function () {
                 yachtCharterCompany.address
             );
     
-            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenisationContract(investor.address);
+            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenizationContract(investor.address);
             await yachtSquadTokenHolder.connect(investor).transferToken(investor.address, tokenId, amount);
     
             // Check balances
@@ -184,7 +184,7 @@ describe("YachtSquadTokenHolder contract", function () {
             );
 
             // Set the YachtSquadTokenization contract as the authorized caller in YachtSquadTokenHolder
-            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenisationContract(investor.address);
+            await yachtSquadTokenHolder.connect(owner).setYachtSquadTokenizationContract(investor.address);
 
             // Transfer tokens from the holder to an investor
             await yachtSquadTokenHolder.connect(investor).transferTokenBatch( investor.address, [tokenId0, tokenId1], [amount0, amount1]);
